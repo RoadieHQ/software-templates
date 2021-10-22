@@ -32,4 +32,6 @@ jobs:
         with:
           node-version: 14.x
       - run: yarn install
+      - run: cd frontend && yarn install && cd ..
+      - run: yarn build --stage prod
       - run: yarn deploy --stage prod
