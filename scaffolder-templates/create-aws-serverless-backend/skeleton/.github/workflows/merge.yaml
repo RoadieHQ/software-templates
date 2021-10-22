@@ -13,11 +13,15 @@ jobs:
       matrix:
         node-version: [14.x]
 
+    env:
+      AWS_PROFILE: default
+
     runs-on: ubuntu-latest
     name: Deploy
     steps:
       - uses: Fooji/create-aws-profile-action@v1
         with:
+          profile: default
           key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           secret: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           region: eu-west-1
@@ -28,4 +32,4 @@ jobs:
         with:
           node-version: 14.x
       - run: yarn install
-      - run: yarn deploy --stage dev
+      - run: yarn deploy --stage prod
