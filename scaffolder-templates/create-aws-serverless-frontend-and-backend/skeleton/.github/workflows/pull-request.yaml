@@ -1,0 +1,25 @@
+---
+name: Pre Merge Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  tests:
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    runs-on: ubuntu-latest
+    name: Run Tests
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - run: yarn install
+      - run: yarn prettier:check
+      - run: yarn test
