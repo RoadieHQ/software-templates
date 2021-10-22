@@ -69,6 +69,7 @@ spec:
         allowedHosts: ['github.com']
         description: 'This is {{ parameters.component_id }}'
         repoUrl: '{{ parameters.repoUrl }}'
+        defaultBranch: main
 
   output:
     remoteUrl: '{{ steps.publish.output.remoteUrl }}'
