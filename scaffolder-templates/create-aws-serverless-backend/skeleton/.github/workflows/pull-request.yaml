@@ -1,5 +1,5 @@
 ---
-name: CI
+name: Pre Merge Tests
 
 on:
   pull_request:
