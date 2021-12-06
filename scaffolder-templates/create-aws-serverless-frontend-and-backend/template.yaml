@@ -1,9 +1,9 @@
 apiVersion: backstage.io/v1beta2
 kind: Template
 metadata:
-  name: create-aws-serverless-fronend-and-backend
-  title: Create AWS Serverless Fronend and Backend
-  description: Create AWS Serverless Fronend and Backend
+  name: create-aws-serverless-frontend-and-backend
+  title: Create AWS Serverless Frontend and Backend
+  description: Create AWS Serverless Frontend and Backend
   tags:
     - aws
 
