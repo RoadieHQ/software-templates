@@ -1,0 +1,71 @@
+apiVersion: backstage.io/v1beta2
+kind: Template
+metadata:
+  name: david-learning-1
+  title: David Learning 1
+  description: Create something with the scaffolder
+
+spec:
+  owner: user:dtuite
+  type: library
+  parameters:
+    - title: Provide some simple information
+      required:
+        - component_name
+        - description
+        - owner
+      properties:
+        component_name:
+          title: Name
+          type: string
+          description: Unique name of the component
+
+        description:
+          title: Description
+          type: string
+          description: Help others understand what this component is for.
+
+        owner:
+          title: Owner
+          type: string
+          description: Owner of the component
+          ui:field: OwnerPicker
+          ui:options:
+            allowedKinds: 
+              - Group
+
+    - title: Choose a location to store this component
+      required:
+        - repoUrl
+      properties: 
+        repoUrl:
+          title: Repository Location
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+
+  steps:
+    - id: template
+      name: Fetch Skeleton + Template
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          component_name: '{{ parameters.component_name }}'
+          description: '{{ parameters.description }}'
+          destination: '{{ parseRepoUrl parameters.repoUrl }}'
+          owner: '{{ parameters.owner }}'
+
+    - id: publish
+      name: Publish
+      action: publish:github
+      input:
+        allowedHosts: ['github.com']
+        description: 'This is {{ parameters.component_name }}'
+        repoUrl: '{{ parameters.repoUrl }}'
+        defaultBranch: main
+
+  output:
+    remoteUrl: '{{ steps.publish.output.remoteUrl }}'
