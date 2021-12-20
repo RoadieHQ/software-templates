@@ -1,0 +1,68 @@
+apiVersion: backstage.io/v1beta2
+kind: Template
+metadata:
+  name: create-empty-project
+  title: Create Empty Project
+  description: Create Empty Project
+
+spec:
+  owner: info@roadie.io
+  type: service
+  parameters:
+    - title: Provide some simple information
+      required:
+        - component_id
+        - owner
+      properties:
+        component_id:
+          title: Name
+          type: string
+          description: Unique name of the component
+        description:
+          title: Description
+          type: string
+          description: Help others understand what this project is for.
+        owner:
+          title: Owner
+          type: string
+          description: Owner of the component
+          ui:field: OwnerPicker
+          ui:options:
+            allowedKinds: 
+              - Group
+    - title: Choose a location
+      required:
+        - repoUrl
+      properties: 
+        repoUrl:
+          title: Repository Location
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+  steps:
+    - id: template
+      name: Fetch Skeleton + Template
+      action: fetch:template
+      input:
+        url: ./skeleton
+        copyWithoutRender:
+          - .github/workflows/*
+        values:
+          component_id: '{{ parameters.component_id }}'
+          description: '{{ parameters.description }}'
+          destination: '{{ parseRepoUrl parameters.repoUrl }}'
+          owner: '{{ parameters.owner }}'
+
+    - id: publish
+      name: Publish
+      action: publish:github
+      input:
+        allowedHosts: ['github.com']
+        description: 'This is {{ parameters.component_id }}'
+        repoUrl: '{{ parameters.repoUrl }}'
+        defaultBranch: main
+
+  output:
+    remoteUrl: '{{ steps.publish.output.remoteUrl }}'
