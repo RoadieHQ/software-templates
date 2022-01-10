@@ -1,0 +1,70 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: vanilla-html-website
+  title: Vanilla HTML Website
+  description: |
+    Create a static HTML website and run it on Netlify.
+
+spec:
+  owner: user:dtuite
+  type: library
+  parameters:
+    - title: Provide some simple information
+      required:
+        - website_name
+      properties:
+        website_name:
+          title: Website name
+          type: string
+          description: This will be displayed prominantly on your website.
+
+    - title: Choose a Source Control Management tool to store your new website in.
+      required:
+        - repoUrl
+      properties: 
+        repoUrl:
+          title: Repository Location
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+
+  steps:
+    - id: template
+      name: Fetch Skeleton + Template
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          website_name: ${{ parameters.website_name }}
+
+    - id: publishToGitHub
+      name: Publish to GitHub
+      action: publish:github
+      input:
+        allowedHosts: ['github.com']
+        description: 'A static HTML website. Just like the good old days.'
+        repoUrl: ${{ parameters.repoUrl }}
+        defaultBranch: main
+        repoVisibility: public
+
+    - id: publishToWeb
+      name: Publish to web
+      action: http:backstage:request
+      input:
+        method: 'POST'
+        path: /api/proxy/github-api/repos/${{ (parameters.repoUrl | parseRepoUrl)["owner"] }}/${{ (parameters.repoUrl | parseRepoUrl)["repo"] }}/pages
+        headers:
+          content-type: 'application/json'
+        body:
+          source:
+            branch: main
+            path: '/'
+
+  output:
+    remoteUrl: ${{ steps.publishToGitHub.output.remoteUrl }}
+    getResponse: ${{ steps.publishtToWeb.output.body }}
+    getCode: ${{ steps.publishtToWeb.output.code }}
+    getHeaders: ${{ steps.publishtToWeb.output.headers }}
