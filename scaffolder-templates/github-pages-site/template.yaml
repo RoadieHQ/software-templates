@@ -1,14 +1,13 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: vanilla-html-website
-  title: Vanilla HTML Website
-  description: |
-    Create a static HTML website and run it on Netlify.
+  name: github-pages-site
+  title: GitHub Pages Website
+  description: Create a static HTML website and publish it via GitHub pages.
 
 spec:
   owner: user:dtuite
-  type: library
+  type: website
   parameters:
     - title: Provide some simple information
       required:
@@ -17,7 +16,7 @@ spec:
         website_name:
           title: Website name
           type: string
-          description: This will be displayed prominantly on your website.
+          description: This will be displayed prominantly on your website and in the title tag.
 
     - title: Choose a Source Control Management tool to store your new website in.
       required:
