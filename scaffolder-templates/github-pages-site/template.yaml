@@ -17,6 +17,10 @@ spec:
           title: Website name
           type: string
           description: This will be displayed prominantly on your website and in the title tag.
+        website_pagerduty_escalation_policy_id:
+          title: PagerDuty Escalation Policy ID
+          type: string
+          description: Find these at pagerduty.com/escalation_policies. It is the part of the URL after the hash.
 
     - title: Choose a Source Control Management tool to store your new website in.
       required:
@@ -48,6 +52,23 @@ spec:
         repoUrl: ${{ parameters.repoUrl }}
         defaultBranch: main
         repoVisibility: public
+
+    - id: registerInPagerDuty
+      name: Register in PagerDuty
+      action: http:backstage:request
+      input:
+        method: 'POST'
+        path: /api/proxy/pagerduty/services
+        headers:
+          content-type: 'application/json'
+        body:
+          service:
+            name: ${{ (parameters.repoUrl | parseRepoUrl)["repo"] }}
+            description: 'A static HTML website. Just like the good old days.'
+            escalation_policy:
+              id: ${{ parameters.website_pagerduty_escalation_policy_id }}
+              type: escalation_policy_reference
+
 
     - id: publishToWeb
       name: Publish to web
