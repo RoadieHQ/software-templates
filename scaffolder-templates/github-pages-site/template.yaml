@@ -53,13 +53,6 @@ spec:
         defaultBranch: main
         repoVisibility: public
 
-    - id: readActivationPoints
-      name: Read activation points
-      action: http:backstage:request
-      input:
-        method: 'GET'
-        path: /api/roadie-activation/activation-points
-
     - id: registerInPagerDuty
       name: Register in PagerDuty
       action: http:backstage:request
@@ -76,23 +69,21 @@ spec:
               id: ${{ parameters.website_pagerduty_escalation_policy_id }}
               type: escalation_policy_reference
 
-    # - id: publishToWeb
-    #   name: Publish to web
-    #   action: http:backstage:request
-    #   input:
-    #     method: 'POST'
-    #     path: /api/proxy/github-api/repos/${{ (parameters.repoUrl | parseRepoUrl)["owner"] }}/${{ (parameters.repoUrl | parseRepoUrl)["repo"] }}/pages
-    #     headers:
-    #       content-type: 'application/json'
-    #     body:
-    #       source:
-    #         branch: main
-    #         path: '/'
+    - id: publishToWeb
+      name: Publish to web
+      action: http:backstage:request
+      input:
+        method: 'POST'
+        path: /api/proxy/github-api/repos/${{ (parameters.repoUrl | parseRepoUrl)["owner"] }}/${{ (parameters.repoUrl | parseRepoUrl)["repo"] }}/pages
+        headers:
+          content-type: 'application/json'
+        body:
+          source:
+            branch: main
+            path: '/'
 
   output:
     remoteUrl: ${{ steps.publishToGitHub.output.remoteUrl }}
-    activationPoints: ${{ steps.readActivationPoints.output.body }}
-    activationPointsCode: ${{ steps.readActivationPoints.output.code }}
-    # getResponse: ${{ steps.publishToWeb.output.body }}
-    # getCode: ${{ steps.publishToWeb.output.code }}
-    # getHeaders: ${{ steps.publishToWeb.output.headers }}
+    getResponse: ${{ steps.publishToWeb.output.body }}
+    getCode: ${{ steps.publishToWeb.output.code }}
+    getHeaders: ${{ steps.publishToWeb.output.headers }}
