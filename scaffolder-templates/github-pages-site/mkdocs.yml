@@ -1,0 +1,8 @@
+site_name: ${{ values.website_name | title }}
+
+nav:
+  - Home: index.md
+
+plugins:
+  - monorepo
+  - techdocs-core

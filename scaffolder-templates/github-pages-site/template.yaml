@@ -84,6 +84,4 @@ spec:
 
   output:
     remoteUrl: ${{ steps.publishToGitHub.output.remoteUrl }}
-    getResponse: ${{ steps.publishToWeb.output.body }}
-    getCode: ${{ steps.publishToWeb.output.code }}
-    getHeaders: ${{ steps.publishToWeb.output.headers }}
+    getResponse: ${{ steps.registerInPagerDuty.output.body }}
