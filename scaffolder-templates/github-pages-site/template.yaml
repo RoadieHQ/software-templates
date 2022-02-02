@@ -44,6 +44,7 @@ spec:
           website_name: ${{ parameters.website_name }}
           repo_name: ${{ (parameters.repoUrl | parseRepoUrl)["repo"] }}
           repo_owner: ${{ (parameters.repoUrl | parseRepoUrl)["owner"] }}
+          pagerduty_integration_key: 1cf15c07f6f440e0a8d65b7ce80be834
 
     - id: publishToGitHub
       name: Publish to GitHub

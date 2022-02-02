@@ -5,12 +5,12 @@ metadata:
   title: ${{ values.website_name | title }}
   description: A static HTML website. Just like the good old days.
   links:
-    - url: https://roadie.github.com/
+    - url: https://${{ values.repo_owner}}.github.io/${{ values.repo_name }}/
       title: Live website
   annotations:
     github.com/project-slug: ${{ values.repo_owner }}/${{ values.repo_name }}
     backstage.io/techdocs-ref: dir:.
-    pagerduty.com/integration-key: 1cf15c07f6f440e0a8d65b7ce80be834
+    pagerduty.com/integration-key: ${{ values.pagerduty_integration_key }}
 spec:
   type: website
   owner: engineering
