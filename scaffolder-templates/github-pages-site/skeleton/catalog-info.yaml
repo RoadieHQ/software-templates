@@ -11,6 +11,7 @@ metadata:
     github.com/project-slug: ${{ values.repo_owner }}/${{ values.repo_name }}
     backstage.io/techdocs-ref: dir:.
     pagerduty.com/integration-key: ${{ values.pagerduty_integration_key }}
+    sentry.io/project-slug: ${{ values.repo_name }}
 spec:
   type: website
   owner: engineering

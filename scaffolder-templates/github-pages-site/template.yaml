@@ -72,6 +72,18 @@ spec:
               id: ${{ parameters.website_pagerduty_escalation_policy_id }}
               type: escalation_policy_reference
 
+    - id: registerInSentry
+      name: Register in Sentry
+      action: http:backstage:request
+      input:
+        method: 'POST'
+        path: /api/proxy/sentry/api/0/teams/roadie/roadie/projects/
+        headers:
+          content-type: 'application/json'
+        body:
+          name: ${{ parameters.website_name }}
+          slug: ${{ (parameters.repoUrl | parseRepoUrl)["repo"] }}
+
     - id: publishToWeb
       name: Publish to web
       action: http:backstage:request
