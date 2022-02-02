@@ -1,10 +1,10 @@
 {
-  "name": "${{ values.repo_name }}",
+  "name": "github-pages-site-skeleton",
   "version": "0.0.1",
-  "description": "A static HTML website. Just like the good old days.",
+  "description": "A skeleton for creating a GitHub pages site.",
   "main": "index.js",
-  "repository": "https://github.com/${{ values.repo_owner }}/${{ values.repo_name }}",
-  "author": "${{ values.repo_owner }}",
+  "repository": "https://github.com/roadiehq/software-templates",
+  "author": "David Tuite",
   "license": "MIT",
   "private": true,
   "devDependencies": {
