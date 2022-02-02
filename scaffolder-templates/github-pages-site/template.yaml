@@ -42,6 +42,8 @@ spec:
         url: ./skeleton
         values:
           website_name: ${{ parameters.website_name }}
+          repo_name: ${{ (parameters.repoUrl | parseRepoUrl)["repo"] }}
+          repo_owner: ${{ (parameters.repoUrl | parseRepoUrl)["owner"] }}
 
     - id: publishToGitHub
       name: Publish to GitHub
