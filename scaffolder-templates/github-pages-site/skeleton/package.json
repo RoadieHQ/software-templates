@@ -1,10 +1,10 @@
 {
-  "name": "github-pages-site-skeleton",
+  "name": "${{ values.repo_name }}",
   "version": "0.0.1",
-  "description": "A skeleton for creating a GitHub pages site.",
+  "description": "A static HTML website. Just like the good old days.",
   "main": "index.js",
-  "repository": "https://github.com/roadiehq/software-templates",
-  "author": "David Tuite",
+  "repository": "https://github.com/${{ values.repo_owner }}/${{ values.repo_name }}",
+  "author": "${{ values.repo_owner }}",
   "license": "MIT",
   "private": true,
   "devDependencies": {
@@ -16,3 +16,4 @@
     "test": "cypress open"
   }
 }
+
