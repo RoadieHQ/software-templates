@@ -83,18 +83,18 @@ spec:
           #       name: ${{ parameters.website_name }}
           #       slug: ${{ (parameters.repoUrl | parseRepoUrl)["repo"] }}
 
-          # - id: publishToWeb
-          #   name: Publish to web
-          #   action: http:backstage:request
-          #   input:
-          #     method: 'POST'
-          #     path: /api/proxy/github-api/repos/${{ (parameters.repoUrl | parseRepoUrl)["owner"] }}/${{ (parameters.repoUrl | parseRepoUrl)["repo"] }}/pages
-          #     headers:
-          #       content-type: 'application/json'
-          #     body:
-          #       source:
-          #         branch: main
-          #         path: '/'
+    - id: publishToWeb
+      name: Publish to web with GitHub Pages
+      action: http:backstage:request
+      input:
+        method: 'POST'
+        path: /api/proxy/github-api/repos/${{ (parameters.repoUrl | parseRepoUrl)["owner"] }}/${{ (parameters.repoUrl | parseRepoUrl)["repo"] }}/pages
+        headers:
+          content-type: 'application/json'
+        body:
+          source:
+            branch: main
+            path: '/'
 
   output:
     remoteUrl: ${{ steps.publishToGitHub.output.remoteUrl }}
