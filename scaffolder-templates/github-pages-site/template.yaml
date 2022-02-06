@@ -54,6 +54,7 @@ spec:
         description: 'A static HTML website. Just like the good old days.'
         repoUrl: ${{ parameters.repoUrl }}
         defaultBranch: main
+        repoVisibility: public
 
           # - id: registerInPagerDuty
           #   name: Register in PagerDuty
