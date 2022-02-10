@@ -9,18 +9,18 @@ spec:
   owner: user:dtuite
   type: website
   parameters:
-    # - title: Provide some simple information
-    #   required:
-    #     - website_name
-    #   properties:
-    #     website_name:
-    #       title: Website name
-    #       type: string
-    #       description: This will be displayed prominantly on your website and in the title tag.
-    #     website_pagerduty_escalation_policy_id:
-    #       title: PagerDuty Escalation Policy ID
-    #       type: string
-    #       description: Find these at pagerduty.com/escalation_policies. It is the part of the URL after the hash.
+    - title: Provide some simple information
+      required:
+        - website_name
+      properties:
+        website_name:
+          title: Website name
+          type: string
+          description: This will be displayed prominantly on your website and in the title tag.
+            # website_pagerduty_escalation_policy_id:
+            #   title: PagerDuty Escalation Policy ID
+            #   type: string
+            #   description: Find these at pagerduty.com/escalation_policies. It is the part of the URL after the hash.
 
     - title: Choose a Source Control Management tool to store your new website in.
       required:
@@ -40,11 +40,11 @@ spec:
       action: fetch:template
       input:
         url: ./skeleton
-          # values:
-          #   website_name: ${{ parameters.website_name }}
-          #   repo_name: ${{ (parameters.repoUrl | parseRepoUrl)["repo"] }}
-          #   repo_owner: ${{ (parameters.repoUrl | parseRepoUrl)["owner"] }}
-          #   pagerduty_integration_key: 1cf15c07f6f440e0a8d65b7ce80be834
+        values:
+          website_name: ${{ parameters.website_name }}
+            # repo_name: ${{ (parameters.repoUrl | parseRepoUrl)["repo"] }}
+            # repo_owner: ${{ (parameters.repoUrl | parseRepoUrl)["owner"] }}
+            # pagerduty_integration_key: 1cf15c07f6f440e0a8d65b7ce80be834
 
     - id: publishToGitHub
       name: Publish to GitHub
