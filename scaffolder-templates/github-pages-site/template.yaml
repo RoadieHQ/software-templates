@@ -73,7 +73,7 @@ spec:
         headers:
           content-type: 'application/json'
         body:
-          url: https://roadiehq.github.io/my-cool-site-1/
+          url: https://${{ (parameters.repoUrl | parseRepoUrl)["owner"] }}.github.io/${{ (parameters.repoUrl | parseRepoUrl)["repo"] }}/
 
   output:
     remoteUrl: ${{ steps.publishToGitHub.output.remoteUrl }}
