@@ -67,11 +67,11 @@ spec:
     - id: registerInBetterUptime
       name: Register in Better Uptime
       action: http:backstage:request
-      headers:
-        content-type: 'application/json'
       input:
         method: 'POST'
         path: /api/proxy/betteruptime/monitors
+        headers:
+          content-type: 'application/json'
         body:
           url: https://roadiehq.github.io/my-cool-site-1/
 
