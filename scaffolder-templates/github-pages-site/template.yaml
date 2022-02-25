@@ -73,7 +73,7 @@ spec:
         method: 'POST'
         path: /api/proxy/betteruptime/monitors
         body:
-          url: https://${{ (parameters.repoUrl | parseRepoUrl)["owner"] }}.github.io/${{ (parameters.repoUrl | parseRepoUrl)["repo"] }}/
+          url: https://roadiehq.github.io/my-cool-site-1/
 
   output:
     remoteUrl: ${{ steps.publishToGitHub.output.remoteUrl }}
