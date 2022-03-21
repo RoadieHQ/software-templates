@@ -78,3 +78,4 @@ spec:
 
   output:
     remoteUrl: ${{ steps.publishToGitHub.output.remoteUrl }}
+
