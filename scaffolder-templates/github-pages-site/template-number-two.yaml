@@ -1,0 +1,80 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: github-pages-website
+  title: GitHub Pages Website
+  description: Create a static HTML website and publish it via GitHub pages.
+
+spec:
+  owner: user:dtuite
+  type: website
+  parameters:
+    - title: Provide some simple information
+      required:
+        - website_name
+      properties:
+        website_name:
+          title: Website name
+          type: string
+          description: This will be displayed prominantly on your website and in the title tag.
+
+    - title: Choose a Source Control Management tool to store your new website in.
+      required:
+        - repoUrl
+      properties:
+        repoUrl:
+          title: Repository Location
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+
+  steps:
+    - id: template
+      name: Fetch Skeleton + Template
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          website_name: ${{ parameters.website_name }}
+          repo_name: ${{ (parameters.repoUrl | parseRepoUrl)["repo"] }}
+          repo_owner: ${{ (parameters.repoUrl | parseRepoUrl)["owner"] }}
+
+    - id: publishToGitHub
+      name: Publish to GitHub
+      action: publish:github
+      input:
+        allowedHosts: [ 'github.com' ]
+        description: 'A static HTML website. Just like the good old days.'
+        repoUrl: ${{ parameters.repoUrl }}
+        defaultBranch: main
+        repoVisibility: public
+
+    - id: publishToWeb
+      name: Publish to web with GitHub Pages
+      action: http:backstage:request
+      input:
+        method: 'POST'
+        path: /api/proxy/github/api/repos/${{ (parameters.repoUrl | parseRepoUrl)["owner"] }}/${{ (parameters.repoUrl | parseRepoUrl)["repo"] }}/pages
+        headers:
+          content-type: 'application/json'
+        body:
+          source:
+            branch: main
+            path: '/'
+
+    - id: add-collaborator
+      name: Add roadie-backstage-admin team as collaborator
+      action: http:backstage:request
+      input:
+        method: 'PUT'
+        path: /api/proxy/github/api/orgs/RoadieHQ/teams/roadie-backstage-admin/repos/RoadieHQ/${{ (parameters.repoUrl | parseRepoUrl)["repo"] }}
+        headers:
+          content-type: 'application/json'
+          accept: 'application/vnd.github.v3+json'
+        body:
+          permission: admin
+
+  output:
+    remoteUrl: ${{ steps.publishToGitHub.output.remoteUrl }}
