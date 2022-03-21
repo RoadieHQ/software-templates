@@ -65,7 +65,7 @@ spec:
             path: '/'
 
     - id: add-collaborator
-      name: Add roadie-backstage-admin team as a collaborator
+      name: Add roadie-backstage-admin team as collaborator
       action: http:backstage:request
       input:
         method: 'PUT'
