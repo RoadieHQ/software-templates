@@ -21,7 +21,7 @@ spec:
     - title: Choose a Source Control Management tool to store your new website in.
       required:
         - repoUrl
-      properties: 
+      properties:
         repoUrl:
           title: Repository Location
           type: string
