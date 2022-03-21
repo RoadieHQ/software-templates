@@ -64,17 +64,17 @@ spec:
             branch: main
             path: '/'
 
- - id: add-collaborator
-      name: Add roadie-backstage-admin team as a collaborator
-      action: http:backstage:request
-      input:
-        method: 'PUT'
-        path: /api/proxy/github/api/orgs/RoadieHQ/teams/roadie-backstage-admin/repos/RoadieHQ/${{ (parameters.repoUrl | parseRepoUrl)["repo"] }}
-        headers:
-          content-type: 'application/json'
-          accept: 'application/vnd.github.v3+json'
-        body:
-          permission: admin
+   - id: add-collaborator
+        name: Add roadie-backstage-admin team as a collaborator
+        action: http:backstage:request
+        input:
+          method: 'PUT'
+          path: /api/proxy/github/api/orgs/RoadieHQ/teams/roadie-backstage-admin/repos/RoadieHQ/${{ (parameters.repoUrl | parseRepoUrl)["repo"] }}
+          headers:
+            content-type: 'application/json'
+            accept: 'application/vnd.github.v3+json'
+          body:
+            permission: admin
 
   output:
     remoteUrl: ${{ steps.publishToGitHub.output.remoteUrl }}
