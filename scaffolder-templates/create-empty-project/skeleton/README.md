@@ -1,3 +1,14 @@
-# ${{values.component_id | dump}}
+# ${{values.component_id}}
 
-${{values.description | dump}}
+${{values.description}}
+
+## Local Development
+
+### Building
+
+### Running
+
+### Testing
+
+## Deployment
+

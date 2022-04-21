@@ -1,4 +1,4 @@
-apiVersion: backstage.io/v1beta2
+apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: create-empty-project
@@ -22,6 +22,11 @@ spec:
           title: Description
           type: string
           description: Help others understand what this project is for.
+        type:
+          title: Type of Component
+          type: string
+          description: service, library, etc.
+          enum: ["service", "library", "website", "other"]
         owner:
           title: Owner
           type: string
@@ -41,6 +46,8 @@ spec:
           ui:options:
             allowedHosts:
               - github.com
+#            allowedOwners:
+#              - RoadieHQ
   steps:
     - id: template
       name: Fetch Skeleton + Template
@@ -50,19 +57,28 @@ spec:
         copyWithoutRender:
           - .github/workflows/*
         values:
-          component_id: '{{ parameters.component_id }}'
-          description: '{{ parameters.description }}'
-          destination: '{{ parseRepoUrl parameters.repoUrl }}'
-          owner: '{{ parameters.owner }}'
+          component_id: ${{ parameters.component_id }}
+          description: ${{ parameters.description }}
+          destination: ${{ parameters.repoUrl | parseRepoUrl }}
+          owner: ${{ parameters.owner }}
+          type: ${{ parameters.type }}
 
     - id: publish
       name: Publish
       action: publish:github
       input:
         allowedHosts: ['github.com']
-        description: 'This is {{ parameters.component_id }}'
-        repoUrl: '{{ parameters.repoUrl }}'
+        description: 'This is ${{ parameters.component_id }}'
+        repoUrl: ${{ parameters.repoUrl }}
         defaultBranch: main
+        requireCodeOwnerReviews: true
+        deleteBranchOnMerge: true
+
 
   output:
     remoteUrl: '{{ steps.publish.output.remoteUrl }}'
+    links:
+      - title: Repository
+        url: ${{ steps.publish.output.remoteUrl }}
+
+
