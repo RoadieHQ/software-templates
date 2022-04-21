@@ -1,0 +1,20 @@
+---
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+
+    env:
+      AWS_PROFILE: roadie-prod
+      AWS_REGION: eu-west-1
+
+    runs-on: ubuntu-latest
+    name: Deploy to prod
+    steps:
+      - uses: actions/checkout@v2
+      - run: true

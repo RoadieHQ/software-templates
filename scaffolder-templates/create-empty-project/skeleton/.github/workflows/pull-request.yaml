@@ -12,4 +12,15 @@ jobs:
     name: Run Tests
     steps:
       - uses: actions/checkout@v2
-      - run: true
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - name: 'Login to npmjs npm repo .npmrc'
+        shell: bash
+        run: |
+          echo "_auth = ${{ secrets.ROADIE_BOT_ARTIFACTORY_PUBLISHING_KEY }}" >> .npmrc
+          echo "always-auth = true" >> .npmrc
+      - run: yarn install
+      - run: yarn lint:security
+      - run: yarn test
