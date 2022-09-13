@@ -29,7 +29,22 @@ spec:
           ui:options:
             allowedHosts:
               - github.com
-
+              
+    - title: Choose a Pagerduty Escalation policy to notify when the page goes down
+      required:
+        - repoUrl
+      properties:
+        escalation_policy:
+          title: escalation_policy
+          type: string
+          description: PagerDuty Escalation Policy
+          ui:field: SelectFieldFromApi
+          ui:options:
+            path: "proxy/pagerduty/escalation_policies"
+            arraySelector: 'escalation_policies'
+            valueSelector: 'id'
+            labelSelector: 'summary'
+            
   steps:
     - id: template
       name: Fetch Skeleton + Template
