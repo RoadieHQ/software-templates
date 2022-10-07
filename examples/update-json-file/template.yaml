@@ -23,7 +23,7 @@ spec:
       action: fetch:plain
       input:
         # Path to the root of the repo of interest. You can also use the RepoUrlPicker to choose one.
-        path: https://github.com/RoadieHQ/software-templates/tree/main/scaffolder-templates/
+        url: https://github.com/RoadieHQ/software-templates/tree/main/scaffolder-templates/
 
     - id: update
       name: Update
