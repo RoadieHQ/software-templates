@@ -42,6 +42,7 @@ spec:
         title: Update my-file.json
         description: update description
         branchName: update-my-file # TODO parameterise?
+        targetPath: examples/update-json-file
 
 
 
