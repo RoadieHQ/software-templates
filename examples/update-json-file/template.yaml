@@ -18,9 +18,9 @@ spec:
           description: Value to assign to my-key
 
   steps:
-    - id: update-file
-      name: Update a json file
-      action: json:merge
+    - id: fetch
+      name: Fetch repo
+      action: fetch:plain
       input:
         # Path to the root of the repo of interest. You can also use the RepoUrlPicker to choose one.
         path: https://github.com/RoadieHQ/software-templates/tree/main/scaffolder-templates/
