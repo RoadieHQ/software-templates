@@ -17,7 +17,17 @@ spec:
           title: Website name
           type: string
           description: This will be displayed prominantly on your website and in the title tag.
-
+        escalation_policy:
+          title: escalation_policy
+          type: string
+          description: Choose a Pagerduty Escalation policy to notify when the page goes down
+          ui:field: SelectFieldFromApi
+          ui:options:
+            path: "proxy/pagerduty/escalation_policies"
+            arraySelector: 'escalation_policies'
+            valueSelector: 'id'
+            labelSelector: 'summary'
+            
     - title: Choose a Source Control Management tool to store your new website in.
       required:
         - repoUrl
@@ -29,7 +39,7 @@ spec:
           ui:options:
             allowedHosts:
               - github.com
-
+            
   steps:
     - id: template
       name: Fetch Skeleton + Template
