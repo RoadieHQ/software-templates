@@ -1,0 +1,47 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: update-json-file
+  title: Update a json file
+  description: Opens a PR with updates to a json file.
+
+spec:
+  owner: engineering
+  type: example
+  parameters:
+    - title: Provide some simple information
+      required: ['my-value']
+      properties:
+        my-value:
+          title: My Value
+          type: string
+          description: Value to assign to my-key
+
+  steps:
+    - id: fetch
+      name: Fetch repo
+      action: fetch:plain
+      input:
+        # Path to the root of the repo of interest. You can also use the RepoUrlPicker to choose one.
+        url: ./
+
+    - id: update
+      name: Update
+      action: roadiehq:utils:merge
+      input:
+        # This file must exist at this path in the repo referenced above
+        path: my-file.json
+        content: 
+          my-key: ${{ parameters.my-value }}
+
+    - id: publish
+      name: Publish
+      action: publish:github:pull-request
+      input:
+        repoUrl: github.com?repo=software-templates&owner=RoadieHQ
+        title: Update my-file.json
+        description: update description
+        branchName: update-my-file # TODO parameterise?
+
+
+
