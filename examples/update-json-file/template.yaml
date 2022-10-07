@@ -32,7 +32,7 @@ spec:
         # This file must exist at this path in the repo referenced above
         path: update-json-file/my-file.json
         content: 
-          my-key: $${{ parameters.my-value }}
+          my-key: ${{ parameters.my-value }}
 
     - id: publish
       name: Publish
