@@ -30,7 +30,7 @@ spec:
       action: roadiehq:utils:merge
       input:
         # This file must exist at this path in the repo referenced above
-        path: update-json-file/my-file.json
+        path: examples/update-json-file/my-file.json
         content: 
           my-key: ${{ parameters.my-value }}
 
