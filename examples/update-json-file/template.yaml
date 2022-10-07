@@ -10,9 +10,9 @@ spec:
   type: example
   parameters:
     - title: Provide some simple information
-      required: ['my-value']
+      required: ['myValue']
       properties:
-        my-value:
+        myValue:
           title: My Value
           type: string
           description: Value to assign to my-key
@@ -31,8 +31,8 @@ spec:
       input:
         # This file must exist at this path in the repo referenced above
         path: my-file.json
-        content: 
-          my-key: ${{ parameters.my-value }}
+        content:
+          my-key: ${{ parameters.myValue }}
 
     - id: publish
       name: Publish
