@@ -35,7 +35,7 @@ spec:
       name: Delete tenant
       action: http:backstage:request
       input:
-        method: 'POST'
+        method: 'DELETE'
         # path: /api/proxy/${{ '' if parameters.tenant_environment === 'prod' else 'dev-' }}tenant-manager/api/tenant
         path: /api/proxy/dev-tenant-manager/api/tenant
         headers:
