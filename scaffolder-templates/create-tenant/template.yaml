@@ -14,6 +14,7 @@ spec:
         - tenant_name
         - tenant_email_domain
         - admin_email
+        - tenant_environment
       properties:
         tenant_name:
           title: Name
@@ -40,7 +41,7 @@ spec:
       action: http:backstage:request
       input:
         method: 'POST'
-        path: /api/proxy/${{ '' if parameters.tenant_environment === 'prod' else 'dev-' }}tenant-manager/api/tenant
+        path: /api/proxy/dev-tenant-manager/api/tenant
         headers:
           # This is specified here rather than in the proxy in order to ensure that
           # http:backstage:request treats the body as JSON.
@@ -53,4 +54,4 @@ spec:
           skipFailures: true
 
   output:
-    remoteUrl: ${{ steps.callTenantManager.output.body }}
+    resp: ${{ steps.callTenantManager.output.body }}
