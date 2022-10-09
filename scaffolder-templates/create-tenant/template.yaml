@@ -7,7 +7,7 @@ metadata:
 
 spec:
   owner: user:dtuite
-  type: tenant-manager
+  type: none
   parameters:
     - title: Provide some simple information
       required:
@@ -16,11 +16,12 @@ spec:
         - admin_email
       properties:
         tenant_name:
-          title: Tenant name
+          title: Name
           type: string
           description: No special chars, numbers as the first char, or dashes as the first or last char. 
+          ui:autofocus: true
         tenant_email_domain:
-          title: Tenant email domain
+          title: Email domain
           type: string
           description: The email domain of users who will be allowed to access the tenant.
         admin_email:
@@ -28,7 +29,7 @@ spec:
           type: string
           description: The email of the person who will drive the evaluation.
         tenant_environment:
-          title: Tenant environment
+          title: Environment
           type: string
           default: dev
           enum: ['dev', 'prod']
@@ -39,7 +40,7 @@ spec:
       action: http:backstage:request
       input:
         method: 'POST'
-        path: /api/proxy/dev-tenant-manager/api/tenant
+        path: /api/proxy/${{ '' if parameters.tenant_environment === 'prod' else 'dev-' }}tenant-manager/api/tenant
         headers:
           # This is specified here rather than in the proxy in order to ensure that
           # http:backstage:request treats the body as JSON.
@@ -48,8 +49,8 @@ spec:
           adminEmail: ${{ parameters.admin_email }}
           tenantName: ${{ parameters.tenant_name }}
           tenantEmailDomain: ${{ parameters.tenant_email_domain }}
-          tenantEnvironment: dev
+          tenantEnvironment: ${{ parameters.tenant_environment }}
           skipFailures: true
 
   output:
-    remoteUrl: ${{ steps.callTenantManager.output }}
+    remoteUrl: ${{ steps.callTenantManager.output.body }}

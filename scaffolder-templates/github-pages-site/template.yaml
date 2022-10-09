@@ -27,6 +27,7 @@ spec:
             arraySelector: 'escalation_policies'
             valueSelector: 'id'
             labelSelector: 'summary'
+
             
     - title: Choose a Source Control Management tool to store your new website in.
       required:
@@ -39,6 +40,8 @@ spec:
           ui:options:
             allowedHosts:
               - github.com
+            allowedOwners:
+              - RoadieHQ
             
   steps:
     - id: template
