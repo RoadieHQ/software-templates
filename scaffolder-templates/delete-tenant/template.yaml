@@ -22,12 +22,6 @@ spec:
           title: Tenant email domain
           type: string
           description: The email domain of users who will be allowed to access the tenant.S
-        tenant_environment:
-          title: Tenant environment
-          type: array
-          items:
-            - dev
-            - prod
             
   steps:
     - id: deleteTenant
