@@ -45,7 +45,7 @@ spec:
         body:
           tenantName: ${{ parameters.tenant_name }}
           tenantEmailDomain: ${{ parameters.tenant_email_domain }}
-          tenantEnvironment: ${{ parameters.tenant_environment }}
+          tenantEnvironment: dev
           skipFailures: true
 
   output:
