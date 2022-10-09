@@ -25,11 +25,11 @@ spec:
           description: The email domain of users who will be allowed to access the tenant.
         admin_email:
           title: Admin email
-          type: email
+          type: string
           description: The email of the person who will drive the evaluation.
         tenant_environment:
           title: Tenant environment
-          type: strong
+          type: string
           default: dev
           enum: ['dev', 'prod']
             
