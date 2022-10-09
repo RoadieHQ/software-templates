@@ -21,15 +21,25 @@ spec:
         tenant_email_domain:
           title: Tenant email domain
           type: string
-          description: The email domain of users who will be allowed to access the tenant.
+          description: The email domain of users who will be allowed to access the tenant.S
+        tenant_environment:
+          title: Tenant environment
+          type: array
+          items:
+            - dev
+            - prod
             
   steps:
-    - id: callTenantManager
-      name: Call tenant manager
+    - id: deleteTenant
+      name: Delete tenant
       action: http:backstage:request
       input:
         method: 'POST'
         path: /api/proxy/dev-tenant-manager/api/tenant
+        headers:
+          # This is specified here rather than in the proxy in order to ensure that
+          # http:backstage:request treats the body as JSON.
+          content-type: 'application/json'
         body:
           tenantName: ${{ parameters.tenant_name }}
           tenantEmailDomain: $${ parameters.tenant_email_domain }}

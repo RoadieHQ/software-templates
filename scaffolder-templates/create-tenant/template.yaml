@@ -27,14 +27,23 @@ spec:
           title: Admin email
           type: email
           description: The email of the person who will drive the evaluation.
+        tenant_environment:
+          title: Tenant environment
+          type: strong
+          default: dev
+          enum: ['dev', 'prod']
             
   steps:
-    - id: callTenantManager
-      name: Call tenant manager
+    - id: createTenant
+      name: Create tenant
       action: http:backstage:request
       input:
         method: 'POST'
         path: /api/proxy/dev-tenant-manager/api/tenant
+        headers:
+          # This is specified here rather than in the proxy in order to ensure that
+          # http:backstage:request treats the body as JSON.
+          content-type: 'application/json'
         body:
           adminEmail: ${{ parameters.admin_email }}
           tenantName: ${{ parameters.tenant_name }}
