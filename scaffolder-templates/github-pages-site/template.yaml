@@ -18,7 +18,7 @@ spec:
           type: string
           description: This will be displayed prominantly on your website and in the title tag.
         escalation_policy:
-          title: escalation_policy
+          title: PagerDuty escalation policy
           type: string
           description: Choose a Pagerduty Escalation policy to notify when the page goes down
           ui:field: SelectFieldFromApi
