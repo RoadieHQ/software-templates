@@ -5,7 +5,7 @@ metadata:
   name: tenant-backstage
   namespace: flux-system
 spec:
-  image: account_id.dkr.ecr.region.amazonaws.com/tenant-backstage
+  image: account_id.dkr.ecr.region.amazonaws.com/${{ values.tenant_name }}-backstage
   interval: 1m0s
   secretRef:
     name: ecr-secret
@@ -17,7 +17,7 @@ metadata:
   namespace: flux-system
 spec:
   imageRepositoryRef:
-    name: tenant-backstage
+    name: ${{ values.tenant_name }}-backstage
   filterTags:
     pattern: ".*-(?P<date>[0-9T]*)$"
     extract: "$date"

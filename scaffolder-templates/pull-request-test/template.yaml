@@ -26,6 +26,8 @@ spec:
       action: fetch:template
       input:
         url: ./skeleton
+        values:
+          tenant_name: ${{ parameters.tenant_name }}
 
     - id: openPullRequest
       name: Open pull request
