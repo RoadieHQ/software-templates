@@ -33,7 +33,7 @@ spec:
       action: publish:github:pull-request
       input:
         repoUrl: 'github.com?repo=demo-iaac-repo&owner=RoadieHQ'
-        branchName: mybranch-123
+        branchName: mybranch-124
         title: Make a change to state
         description: 'This is an automated PR'
         sourcePath: ./skeleton
