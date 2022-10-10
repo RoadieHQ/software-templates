@@ -35,7 +35,7 @@ spec:
         branchName: mybranch-123
         title: Make a change to state
         description: 'This is an automated PR'
-        sourcePath: ./
+        sourcePath: ./skeleton
         targetPath: ./
 
     - id: log-message
