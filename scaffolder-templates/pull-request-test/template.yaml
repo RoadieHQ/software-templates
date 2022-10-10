@@ -29,7 +29,7 @@ spec:
         title: Make a change to state
         description: 'This is an automated PR'
         sourcePath: ./skeleton
-        targetPath: ./my-subdir
+        targetPath: ./
 
   output:
     resp: ${{ steps.openPullRequest.output.remoteUrl }}
