@@ -1,0 +1,35 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: open-pull-request
+  title: Open pull request
+  description: Open a pull request against an IaaC repo.
+
+spec:
+  owner: user:dtuite
+  type: none
+  parameters:
+    - title: Provide some simple information
+      required:
+        - tenant_name
+      properties:
+        tenant_name:
+          title: Name
+          type: string
+          description: No special chars, numbers as the first char, or dashes as the first or last char. 
+          ui:autofocus: true
+            
+  steps:
+    - id: openPullRequest
+      name: Open pull request
+      action: publish:github:pull-request
+      input:
+        repoUrl: 'github.com?repo=demo-iaac-repo&owner=RoadieHQ'
+        branchName: mybranch-123
+        title: Make a change to state
+        description: 'This is an automated PR'
+        sourcePath: ./skeleton
+        targetPath: ./my-subdir
+
+  output:
+    resp: ${{ steps.openPullRequest.output.remoteUrl }}
