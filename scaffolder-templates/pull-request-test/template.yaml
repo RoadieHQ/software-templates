@@ -20,6 +20,13 @@ spec:
           ui:autofocus: true
             
   steps:
+
+    - id: fetchTemplate
+      name: Fetch diff
+      action: fetch:template
+      input:
+        url: ./skeleton
+
     - id: openPullRequest
       name: Open pull request
       action: publish:github:pull-request
@@ -28,7 +35,7 @@ spec:
         branchName: mybranch-123
         title: Make a change to state
         description: 'This is an automated PR'
-        sourcePath: ./skeleton
+        sourcePath: ./
         targetPath: ./
 
     - id: log-message
