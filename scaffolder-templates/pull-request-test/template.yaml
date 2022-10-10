@@ -37,7 +37,7 @@ spec:
         title: Make a change to state
         description: 'This is an automated PR'
         sourcePath: ./skeleton
-        targetPath: ./
+        targetPath: ./skeleton
 
     - id: log-message
       name: Log Message
