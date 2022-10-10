@@ -31,5 +31,11 @@ spec:
         sourcePath: ./skeleton
         targetPath: ./
 
+    - id: log-message
+      name: Log Message
+      action: debug:log
+      input:
+        message: 'RemoteURL: ${{ steps.openPullRequest.output.remoteUrl }}, ${{ steps.openPullRequest.output.pullRequestNumber }}!'
+
   output:
     resp: ${{ steps.openPullRequest.output.remoteUrl }}
