@@ -26,6 +26,7 @@ spec:
       action: fetch:template
       input:
         url: ./skeleton
+        targetPath: ./skeleton
 
     - id: openPullRequest
       name: Open pull request
