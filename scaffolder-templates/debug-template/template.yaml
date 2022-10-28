@@ -4,9 +4,10 @@ metadata:
   name: trigger-github-workflow
   title: Trigger github workflow
   description: Basic template to trigger a github worklfow
+
+spec:
   owner: group:default/engineering
   type: service
-
   parameters:
     - title: Document front content
       properties:
