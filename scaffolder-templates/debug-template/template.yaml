@@ -1,8 +1,8 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: trigger-github-workflow
-  title: Trigger github workflow
+  name: debug-template
+  title: Template to debug skeleton templates
   description: Basic template to trigger a github worklfow
 
 spec:
@@ -26,7 +26,7 @@ spec:
     - id: fetch-template
       action: fetch:template
       input:
-        url: https://github.com/RoadieHQ/software-templates/tree/add-scaffolder-cookbok-templates/scaffolder-templates/debug-template/skeleton
+        url: https://github.com/RoadieHQ/software-templates/tree/main/scaffolder-templates/debug-template/skeleton
         templateFileExtension: true
         values:
           rfcNumber: ${{ parameters.rfcNumber }}
