@@ -42,7 +42,7 @@ spec:
     - id: fetch-template
       action: fetch:template
       input:
-        url: https://github.com/AcmeInc/software-templates/tree/main/docs/rfcs
+        url: https://github.com/RoadieHQ/software-templates/tree/add-scaffolder-cookbok-templates/scaffolder-templates/create-rfc/skeleton
         templateFileExtension: true
         targetPath: docs/rfcs/${{ parameters.rfcNumber }}
         values:
