@@ -1,0 +1,46 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: debug-template
+  title: Template to debug skeleton templates
+  description: Basic template to trigger a github worklfow
+
+spec:
+  owner: group:default/engineering
+  type: service
+  parameters:
+    - title: Document front content
+      properties:
+        rfcNumber:
+          title: rfcNumber
+          type: string
+        rfcTitle:
+          title: RFC Title
+          type: string
+        abstract:
+          title: Document Abstract (optional draft version)
+          type: string
+          ui:widget: textarea
+
+  steps:
+    - id: fetch-template
+      action: fetch:template
+      input:
+        url: https://github.com/RoadieHQ/software-templates/tree/main/scaffolder-templates/debug-template/skeleton
+        templateFileExtension: true
+        values:
+          rfcNumber: ${{ parameters.rfcNumber }}
+          rfcTitle: ${{ parameters.rfcTitle }}
+          abstract: ${{ parameters.abstract }}
+
+    - id: read-file
+      name: Read File
+      action: fs:read
+      input:
+        path: ./template.md
+
+    - id: log-message
+      name: Log Message
+      action: debug:log
+      input:
+        message: ${{ steps['read-file'].output.content }}

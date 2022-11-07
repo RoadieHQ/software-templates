@@ -1,0 +1,67 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: create-rfc-template
+  title: Create a new RFC flavored markdown document
+  description: Create a new RFC flavored markdown document
+spec:
+  owner: group:default/engineering
+  type: service
+
+  parameters:
+    - title: Document front content
+      properties:
+        rfcNumber:
+          title: rfcNumber
+          type: string
+        rfcTitle:
+          title: RFC Title
+          type: string
+        abstract:
+          title: Document Abstract (optional draft version)
+          type: string
+          ui:widget: textarea
+    - title: Repository to place document
+      properties:
+        repoUrl:
+          content:
+            type: string
+          description: Name of repository
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+
+  steps:
+    - id: log-message
+      name: Log Message
+      action: debug:log
+      input:
+        message: Creating ${{ parameters.rfcNumber }}/index.md
+
+    - id: fetch-template
+      action: fetch:template
+      input:
+        url: https://github.com/RoadieHQ/software-templates/tree/main/scaffolder-templates/create-rfc/skeleton
+        templateFileExtension: true
+        targetPath: docs/rfcs/${{ parameters.rfcNumber }}
+        values:
+          rfcNumber: ${{ parameters.rfcNumber }}
+          rfcTitle: ${{ parameters.rfcTitle }}
+          abstract: ${{ parameters.abstract }}
+
+    - id: move-rfc
+      action: fs:rename
+      input:
+        files:
+          - from: docs/rfcs/${{ parameters.rfcNumber }}/template.md
+            to: docs/rfcs/${{ parameters.rfcNumber }}/index.md
+
+    - id: create-pull-request
+      name: create-pull-request
+      action: publish:github:pull-request
+      input:
+        repoUrl: ${{ parameters.repoUrl }}
+        branchName: RFC-${{ parameters.rfcNumber }}_${{ parameters.rfcTitle | replace(" ", "-") | replace("\"", "") | replace ("'", "") | lower }}
+        title: RFC-${{ parameters.rfcNumber }} - ${{ parameters.rfcTitle }}
+        description: ${{ parameters.abstract }}
