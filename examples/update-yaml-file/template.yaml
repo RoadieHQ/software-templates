@@ -10,7 +10,7 @@ spec:
   type: example
   parameters:
     - title: Provide some simple information
-      required: ['value]
+      required: ['value']
       properties:
         value:
           title: The new value
