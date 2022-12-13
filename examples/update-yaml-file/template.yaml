@@ -39,8 +39,9 @@ spec:
       action: publish:github:pull-request
       input:
         repoUrl: github.com?repo=software-templates&owner=RoadieHQ
-        title: Update my-file.json
+        title: Update my-file.yaml
         description: update description
+        targetPath: examples/update-yaml-file
         branchName: update-my-file # TODO parameterise?
 
 
