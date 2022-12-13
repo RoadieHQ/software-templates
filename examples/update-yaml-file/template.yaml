@@ -1,0 +1,48 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: update-yaml-file
+  title: Update a yaml file
+  description: Opens a PR with updates to a yaml file.
+
+spec:
+  owner: engineering
+  type: example
+  parameters:
+    - title: Provide some simple information
+      required: ['value']
+      properties:
+        value:
+          title: The new value
+          type: string
+          description: Update myKey.subKey in the yaml file
+
+  steps:
+    - id: fetchPlain
+      name: Fetch the file
+      action: fetch:plain
+      input:
+        url: ./
+
+    - id: update
+      name: Update
+      action: roadiehq:utils:merge
+      input:
+        # This file must exist at this path in the repo referenced above
+        path: my-file.yaml
+        content:
+          myKey:
+            subKey: ${{ parameters.value }}
+
+    - id: publish
+      name: Publish
+      action: publish:github:pull-request
+      input:
+        repoUrl: github.com?repo=software-templates&owner=RoadieHQ
+        title: Update my-file.yaml
+        description: update description
+        targetPath: examples/update-yaml-file
+        branchName: update-my-file # TODO parameterise?
+
+
+
