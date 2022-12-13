@@ -32,7 +32,7 @@ spec:
         path: my-file.yaml
         content:
           myKey:
-            subKey: new value
+            subKey: ${{ parameters.value }}
 
     - id: publish
       name: Publish
