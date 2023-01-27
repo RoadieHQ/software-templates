@@ -1,0 +1,3 @@
+validator:
+  exclude:
+    - 'software-templates/**/skelaton/catalog-info.yaml'
