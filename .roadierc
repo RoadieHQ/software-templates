@@ -1,0 +1,3 @@
+validator:
+  exclude:
+    - 'scaffolder-templates/*/skeleton/catalog-info.yaml'
