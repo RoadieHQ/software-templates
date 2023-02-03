@@ -13,6 +13,8 @@ spec:
       required:
         - component_id
         - owner
+        - description
+        - type
       properties:
         component_id:
           title: Name
