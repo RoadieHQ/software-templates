@@ -23,7 +23,7 @@ spec:
           type: string
           description: Your Roadie tenant name. You can find this from the URL `https://<your-roadie-tenant>.roadie.so`.
 
-    - title: Choose a Source Control Management tool to store your new website in.
+    - title: Choose a Source Control Management tool to store your Roadie Agent Service in.
       required:
         - repoUrl
       properties:
