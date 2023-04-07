@@ -1,0 +1,59 @@
+apiVersion: backstage.io/v1beta3
+kind: Template
+metadata:
+  name: create-roadie-agent-entity-provider
+  title: Create Roadie Agent Entity Provider
+  description: Create a Roadie Agent service repository to provide entities securely from your infrastructure
+
+spec:
+  owner: info@roadie.io
+  type: service
+  parameters:
+    - title: Provide some simple information
+      required:
+        - agent_name
+        - tenant
+      properties:
+        agent_name:
+          title: Name
+          type: string
+          description: Unique name of the Roadie Agent Entity Provider.
+        tenant:
+          title: Tenant
+          type: string
+          description: Your Roadie tenant name. You can find this from the URL `https://<your-roadie-tenant>.roadie.so`.
+
+    - title: Choose a Source Control Management tool to store your new website in.
+      required:
+        - repoUrl
+      properties:
+        repoUrl:
+          title: Repository Location
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+  steps:
+    - id: template
+      name: Fetch Skeleton + Template
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          repo_name: ${{ (parameters.repoUrl | parseRepoUrl)["repo"] }}
+          repo_owner: ${{ (parameters.repoUrl | parseRepoUrl)["owner"] }}
+          tenant: ${{ (parameters.tenant }}
+          agent_name: ${{ (parameters.agent_name }}
+
+    - id: publish
+      name: Publish
+      action: publish:github
+      input:
+        allowedHosts: ['github.com']
+        description: 'This is {{ parameters.agent_name }}'
+        repoUrl: '{{ parameters.repoUrl }}'
+        defaultBranch: main
+
+  output:
+    remoteUrl: '{{ steps.publish.output.remoteUrl }}'
