@@ -51,9 +51,9 @@ spec:
       action: publish:github
       input:
         allowedHosts: ['github.com']
-        description: 'This is {{ parameters.agent_name }}'
-        repoUrl: '{{ parameters.repoUrl }}'
+        description: 'This is ${{ parameters.agent_name }}'
+        repoUrl: ${{ parameters.repoUrl }}
         defaultBranch: main
 
   output:
-    remoteUrl: '{{ steps.publish.output.remoteUrl }}'
+    remoteUrl: ${{ steps.publish.output.remoteUrl }}
