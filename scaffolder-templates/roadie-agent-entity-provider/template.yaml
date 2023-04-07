@@ -1,4 +1,4 @@
-apiVersion: backstage.io/v1beta3
+apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: create-roadie-agent-entity-provider
