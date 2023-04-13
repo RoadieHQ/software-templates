@@ -1,0 +1,16 @@
+{
+  "name": "roadie-agent-entity-provider",
+  "version": "1.0.0",
+  "description": "A Roadie Agent Entity Provider.",
+  "main": "index.js",
+  "repository": "https://github.com/${{ values.repo_owner }}/${{ values.repo_name }}",
+  "author": "${{ values.repo_owner }}",
+  "license": "UNLICENSED",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "@roadiehq/roadie-agent": "^1.0.0"
+  }
+}
