@@ -16,6 +16,7 @@ spec:
         website_name:
           title: Website name
           type: string
+          name: website-name
           description: This will be displayed prominently on your website and in the title tag.
         escalation_policy:
           title: PagerDuty escalation policy
