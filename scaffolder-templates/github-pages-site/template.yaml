@@ -70,9 +70,7 @@ spec:
       action: http:backstage:request
       input:
         method: 'POST'
-        path: /api/proxy/github/api/repos/${{ (parameters.repoUrl | parseRepoUrl)["owner"] }}/${{ (parameters.repoUrl | parseRepoUrl)["repo"] }}/pages
-        headers:
-          content-type: 'application/json'
+        path: /api/proxy/mygithub/api/repos/${{ (parameters.repoUrl | parseRepoUrl)["owner"] }}/${{ (parameters.repoUrl | parseRepoUrl)["repo"] }}/pages
         body:
           source:
             branch: main
