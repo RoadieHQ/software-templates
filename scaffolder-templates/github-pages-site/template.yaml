@@ -71,6 +71,8 @@ spec:
       input:
         method: 'POST'
         path: /proxy/mygithub/api/repos/${{ (parameters.repoUrl | parseRepoUrl)["owner"] }}/${{ (parameters.repoUrl | parseRepoUrl)["repo"] }}/pages
+        headers:
+          content-type: 'application/json'
         body:
           source:
             branch: main
