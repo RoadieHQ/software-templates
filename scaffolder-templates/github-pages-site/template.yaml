@@ -83,7 +83,7 @@ spec:
       action: http:backstage:request
       input:
         method: 'POST'
-        path: /api/proxy/betteruptime/monitors
+        path: /proxy/betteruptime/monitors
         headers:
           content-type: 'application/json'
         body:
