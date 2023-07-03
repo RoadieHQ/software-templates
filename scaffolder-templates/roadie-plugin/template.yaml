@@ -11,13 +11,8 @@ spec:
   parameters:
     - title: Provide some simple information
       required:
-        - repository
         - plugin_name
       properties:
-        repository:
-          title: Name
-          type: string
-          description: Unique name of the repository containing Roadie plugins.
         plugin_name:
           title: Plugin name
           type: string
