@@ -39,7 +39,15 @@ spec:
           repo_name: ${{ (parameters.repoUrl | parseRepoUrl)["repo"] }}
           repo_owner: ${{ (parameters.repoUrl | parseRepoUrl)["owner"] }}
           tenant: ${{ parameters.repository }}
-          agent_name: ${{ parameters.plugin_name }}
+          plugin_name: ${{ parameters.plugin_name }}
+
+    - id: fs:rename
+      name: Fill in names and descriptions
+      action: fs:rename
+      input:
+        files:
+          - from: ./plugins/my-plugin
+            to: ./plugins/${{ parameters.plugin_name }}
 
     - id: publish
       name: Publish
