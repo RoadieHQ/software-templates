@@ -58,5 +58,12 @@ spec:
         repoUrl: ${{ parameters.repoUrl }}
         defaultBranch: main
 
+
   output:
-    remoteUrl: ${{ steps.publish.output.remoteUrl }}
+    links:
+      - title: Repository
+        icon: github
+        url: ${{ steps['publish'].output.remoteUrl }}
+      - title: Roadie CLI documentation
+        icon: help
+        url: https://www.npmjs.com/package/@roadiehq/roadie-cli

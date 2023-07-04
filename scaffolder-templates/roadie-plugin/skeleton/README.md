@@ -25,33 +25,33 @@ To install needed dependencies, run:
 
 Plugins within the repository can all be run from within the root folder. 
 
-Example commands, if your plugin is named `my-plugin`
+Example commands, if your plugin is named `${{ values.plugin_name }}`
 
 #### Run in development mode
 
 This will build the plugin code and start a webserver to host the generated Roadie compatible plugin assets.
 
-`npm run develop --workspace=my-plugin`
+`npm run develop --workspace=${{ values.plugin_name }}`
 
 #### Run in development mode, with a file watcher
 
 This will build the plugin code and start a webserver while listening to file changes within the plugin folder. Each change to a file restarts the webserver, allowing for a faster development workflow
 
-`npm run develop:watch --workspace=my-plugin`
+`npm run develop:watch --workspace=${{ values.plugin_name }}`
 
 
 #### Bundling a production build of a plugin
 
 This will build your wanted plugin and output the generated Roadie compatible assets to the defined folder, so they can be uploaded to a static hosting site.
 
-` npm run build --workspace=my-plugin --host https://my-static-hosting.com/my-plugin`
+` npm run build --workspace=${{ values.plugin_name }} --host https://my-static-hosting.com/${{ values.plugin_name }}`
 
 
 #### Bundling a production build of a plugin and uploading it to AWS S3
 
 This will build your wanted plugin and output the generated Roadie compatible assets to the defined folder, and uploads the generated Roadie compatible assets to AWS S3. The command uses environment variables `S3_BUCKET_NAME` & `S3_BUCKET_PREFIX` to determine the S3 bucket and path. Normal AWS credential chain is used to determine AWS credentials.
 
-` npm run build:upload:s3 --workspace=my-plugin --host https://my-static-hosting.com/my-plugin`
+` npm run build:upload:s3 --workspace=${{ values.plugin_name }} --host https://my-static-hosting.com/${{ values.plugin_name }}`
 
 
 
