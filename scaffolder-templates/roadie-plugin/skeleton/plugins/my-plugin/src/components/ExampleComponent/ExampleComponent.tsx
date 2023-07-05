@@ -9,6 +9,7 @@ import {
   HeaderLabel,
   SupportButton,
 } from "@backstage/core-components";
+import { ExampleFetchComponent } from "../ExampleFetchComponent";
 
 export const ExampleComponent = () => (
   <Page themeId="tool">
@@ -27,6 +28,9 @@ export const ExampleComponent = () => (
               All content should be wrapped in a card like this.
             </Typography>
           </InfoCard>
+        </Grid>
+        <Grid item>
+          <ExampleFetchComponent />
         </Grid>
       </Grid>
     </Content>
