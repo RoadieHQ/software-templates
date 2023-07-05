@@ -1,0 +1,1 @@
+export { EntityContentComponent } from "./EntityContentComponent";
