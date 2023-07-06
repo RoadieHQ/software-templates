@@ -1,0 +1,4 @@
+app:
+  baseUrl: http://localhost:3333
+backend:
+  baseUrl: http://localhost:7777
