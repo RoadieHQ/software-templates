@@ -9,50 +9,50 @@ spec:
   owner: group:default/engineering
   type: service
 
-    parameters:
-      - title: What is your service about?
-        required:
-          - name
-        properties:
-          name:
-            title: Service name
-            type: string
-            description: Human readable name. We'll generate a dasherized version from it.
-          description:
-            title: Service description
-            type: string
-          owner:
-            title: Service Owner
-            type: string
-            description: Owner of the component
-            ui:field: OwnerPicker
-            ui:options:
-              catalogFilter:
-                kind: Group
-      - title: Where is your codebase?
-        required:
-          - repoSlug
-        properties:
-          repoSlug:
-            title: Repository slug
-            type: string
-            description: Only repos within the roadiehq org are allowed.
-          repoHost:
-            type: string
-            default: github.com
-            ui:widget: hidden
-          repoOwner:
-            type: string
-            default: jorgelainfiesta
-            ui:widget: hidden
-      - title: Integrations (optional)
-        properties:
-          argoAppName:
-            title: Argo CD App Name
-            type: string
-          pagerdutyKey:
-            title: PagerDuty integration key
-            type: string
+  parameters:
+    - title: What is your service about?
+      required:
+        - name
+      properties:
+        name:
+          title: Service name
+          type: string
+          description: Human readable name. We'll generate a dasherized version from it.
+        description:
+          title: Service description
+          type: string
+        owner:
+          title: Service Owner
+          type: string
+          description: Owner of the component
+          ui:field: OwnerPicker
+          ui:options:
+            catalogFilter:
+              kind: Group
+    - title: Where is your codebase?
+      required:
+        - repoSlug
+      properties:
+        repoHost:
+          type: string
+          default: github.com
+          ui:widget: hidden
+        repoOwner:
+          title: Repository owner
+          type: string
+          default: roadiehq
+          enum: ['roadiehq', 'jorgelainfiesta']
+        repoSlug:
+          title: Repository slug
+          type: string
+    - title: Integrations (optional)
+      properties:
+        argoAppName:
+          title: Argo CD App Name
+          type: string
+        pagerdutyKey:
+          title: PagerDuty integration key
+          type: string
   steps:
       - id: fetch-template
         action: fetch:template
