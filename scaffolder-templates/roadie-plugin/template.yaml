@@ -17,7 +17,7 @@ spec:
           title: Plugin name
           type: string
           description: Unique name of the first plugin in the repository.
-          placeholder: docs-plugin
+          ui:placeholder: docs-plugin
 
     - title: Create a GitHub repo to store your custom plugins in
       required:
