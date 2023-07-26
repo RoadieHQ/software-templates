@@ -18,7 +18,7 @@ spec:
           type: string
           description: Unique name of the first plugin in the repository.
 
-    - title: Choose a Source Control Management tool to store your Roadie Agent Service in.
+    - title: Choose a Source Control Management tool to store your Roadie Plugins Monorepo in.
       required:
         - repoUrl
       properties:
