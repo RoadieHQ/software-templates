@@ -17,8 +17,9 @@ spec:
           title: Plugin name
           type: string
           description: Unique name of the first plugin in the repository.
+          placeholder: docs-plugin
 
-    - title: Choose a Source Control Management tool to store your Roadie Agent Service in.
+    - title: Create a GitHub repo to store your custom plugins in
       required:
         - repoUrl
       properties:
