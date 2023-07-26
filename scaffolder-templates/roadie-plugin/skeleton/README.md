@@ -51,7 +51,7 @@ This will build your wanted plugin and output the generated Roadie compatible as
 
 This will build your wanted plugin and output the generated Roadie compatible assets to the defined folder, and uploads the generated Roadie compatible assets to AWS S3. The command uses environment variables `S3_BUCKET_NAME` & `S3_BUCKET_PREFIX` to determine the S3 bucket and path. Normal AWS credential chain is used to determine AWS credentials.
 
-` npm run build:upload:s3 --workspace=${{ values.plugin_name }} --host https://my-static-hosting.com/${{ values.plugin_name }}`
+` npm run build:upload:s3 --workspace=${{ values.plugin_name }} --host https://static-assets.roadie.so/<my-tenant>`
 
 
 
