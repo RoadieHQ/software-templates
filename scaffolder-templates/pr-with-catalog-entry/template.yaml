@@ -1,0 +1,76 @@
+---
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: open-pr-with-catalog-entry
+  title: Onboard your service to Backstage
+  description: Create a new PR with your service's details.
+spec:
+  owner: group:default/engineering
+  type: service
+
+  parameters:
+    - title: What is your service about?
+      required:
+        - name
+      properties:
+        name:
+          title: Service name
+          type: string
+          description: Human readable name. We'll generate a dasherized version from it.
+        description:
+          title: Service description
+          type: string
+        owner:
+          title: Service Owner
+          type: string
+          description: Owner of the component
+          ui:field: OwnerPicker
+          ui:options:
+            catalogFilter:
+              kind: Group
+    - title: Where is your codebase?
+      required:
+        - repoSlug
+      properties:
+        repoHost:
+          type: string
+          default: github.com
+          ui:widget: hidden
+        repoOwner:
+          title: Repository owner
+          type: string
+          default: roadiehq
+          enum: ['roadiehq', 'jorgelainfiesta']
+        repoSlug:
+          title: Repository slug
+          type: string
+    - title: Integrations (optional)
+      properties:
+        argoAppName:
+          title: Argo CD App Name
+          type: string
+        pagerdutyKey:
+          title: PagerDuty integration key
+          type: string
+  steps:
+      - id: fetch-template
+        action: fetch:template
+        input:
+          url: ./skeleton
+          values:
+            name: ${{ parameters.name }}
+            description: ${{ parameters.description }}
+            owner: ${{ parameters.owner }}
+            repoOrg: ${{ parameters.repoOwner }}
+            repoSlug: ${{ parameters.repoSlug }}
+            argoAppName: ${{ parameters.argoAppName }}
+            pagerdutyKey: ${{ parameters.pagerdutyKey }}
+      - id: create-pull-request
+        name: create-pull-request
+        action: publish:github:pull-request
+        input:
+          repoUrl: ${{ parameters.repoHost }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoSlug }}
+          branchName: onboard-to-catalog
+          title: Onboard service to Catalog
+          description: This PR adds a metadata file about this service so that it can be registered in our software catalog.

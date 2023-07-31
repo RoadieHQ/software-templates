@@ -1,0 +1,13 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ${{ values.name }}
+  title: ${{ values.name | replace(" ", "-") | lower}}
+  description: ${{ values.description }}
+  annotations:
+    github.com/project-slug: ${{ values.repoOrg }}/${{ values.repoSlug }}
+    {%if values.argoAppName %}argocd/app-name: ${{values.argoAppName}} {% endif %}
+    {%if values.pagerdutyKey %}pagerduty.com/integration-key: ${{values.pagerdutyKey}} {% endif %}
+spec:
+  type: service
+  owner: ${{ values.owner }}
