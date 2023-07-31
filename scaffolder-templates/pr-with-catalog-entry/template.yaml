@@ -73,4 +73,4 @@ spec:
           repoUrl: ${{ parameters.repoHost }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoSlug }}
           branchName: onboard-to-catalog
           title: Onboard service to Catalog
-          description: This PR adds a meta data file about this service so that it can be registered in our software catalog.
+          description: This PR adds a metadata file about this service so that it can be registered in our software catalog.
