@@ -58,6 +58,7 @@ spec:
         action: fetch:template
         input:
           url: ./skeleton
+          templateFileExtension: .njk
           values:
             name: ${{ parameters.name }}
             description: ${{ parameters.description }}
