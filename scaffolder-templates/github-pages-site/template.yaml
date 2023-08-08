@@ -4,6 +4,8 @@ metadata:
   name: github-pages-website
   title: GitHub Pages Website
   description: Create a static HTML website and publish it via GitHub pages.
+  annotations:
+    roadie.io/certified: "true"
 
 spec:
   owner: user:dtuite
