@@ -80,33 +80,36 @@ spec:
           type: boolean
 
   steps:
-      - id: fetch-template
-        action: fetch:template
-        input:
-          url: ./skeleton
-          templateFileExtension: .njk
-          values:
-            repoOrg: ${{ parameters.repoOrg }}
-            repoSlug: ${{ parameters.repoSlug }}
-            tribe: ${{ parameters.tribe }}
-            squad: ${{ parameters.squad }}
-            secretsDetectionEnabled: ${{ parameters.secretsDetectionEnabled }}
-            secretsDetectionScanning: ${{ parameters.secretsDetectionScanning }}
-            secretsDetectionPRs: ${{ parameters.secretsDetectionPRs }}
-            sastEnabled: ${{ parameters.sastEnabled }}
-            codeQLEnabled: ${{ parameters.codeQLEnabled }}
-            codeQLConfigFilePath: ${{ parameters.codeQLConfigFilePath }}
-            veracodeEnabled: ${{ parameters.veracodeEnabled }}
-            sonarcloudEnabled: ${{ parameters.sonarcloudEnabled }}
-            sobelowEnabled: ${{ parameters.sobelowEnabled }}
-            credoEnabled: ${{ parameters.credoEnabled }}
-            klocworkEnabled: ${{ parameters.klocworkEnabled }}
+    - id: fetchTemplate
+      action: fetch:template
+      input:
+        url: ./skeleton
+        templateFileExtension: .njk
+        values:
+          repoOrg: ${{ parameters.repoOrg }}
+          repoSlug: ${{ parameters.repoSlug }}
+          tribe: ${{ parameters.tribe }}
+          squad: ${{ parameters.squad }}
+          secretsDetectionEnabled: ${{ parameters.secretsDetectionEnabled }}
+          secretsDetectionScanning: ${{ parameters.secretsDetectionScanning }}
+          secretsDetectionPRs: ${{ parameters.secretsDetectionPRs }}
+          sastEnabled: ${{ parameters.sastEnabled }}
+          codeQLEnabled: ${{ parameters.codeQLEnabled }}
+          codeQLConfigFilePath: ${{ parameters.codeQLConfigFilePath }}
+          veracodeEnabled: ${{ parameters.veracodeEnabled }}
+          sonarcloudEnabled: ${{ parameters.sonarcloudEnabled }}
+          sobelowEnabled: ${{ parameters.sobelowEnabled }}
+          credoEnabled: ${{ parameters.credoEnabled }}
+          klocworkEnabled: ${{ parameters.klocworkEnabled }}
 
-      - id: create-pull-request
-        name: create-pull-request
-        action: publish:github:pull-request
-        input:
-          repoUrl: ${{ parameters.repoHost }}?owner=${{ parameters.repoOrg }}&repo=${{ parameters.repoName }}
-          branchName: add-security-tools-yaml
-          title: Add security tools YAML file
-          description: The security tools YAML helps InfoSec to understand which security tools your project is using.
+    - id: createPullRequest
+      name: create-pull-request
+      action: publish:github:pull-request
+      input:
+        repoUrl: ${{ parameters.repoHost }}?owner=${{ parameters.repoOrg }}&repo=${{ parameters.repoName }}
+        branchName: add-security-tools-yaml
+        title: Add security tools YAML file
+        description: The security tools YAML helps InfoSec to understand which security tools your project is using.
+
+  output:
+    remoteUrl: ${{ steps.createPullRequest.output.remoteUrl }}
