@@ -81,6 +81,7 @@ spec:
 
   steps:
     - id: fetchTemplate
+      name: Fetch a skeleton security tools file.
       action: fetch:template
       input:
         url: ./skeleton
@@ -103,7 +104,7 @@ spec:
           klocworkEnabled: ${{ parameters.klocworkEnabled }}
 
     - id: createPullRequest
-      name: create-pull-request
+      name: Open a PR on the repo
       action: publish:github:pull-request
       input:
         repoUrl: ${{ parameters.repoHost }}?owner=${{ parameters.repoOrg }}&repo=${{ parameters.repoName }}
