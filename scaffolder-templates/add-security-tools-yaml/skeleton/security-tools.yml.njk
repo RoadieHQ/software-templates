@@ -1,0 +1,30 @@
+# Tribe and Squad identification
+tribe: example
+squad: example
+
+security_tools:
+
+  # Secrets Detection
+  secrets_detection:
+    enabled: ${{ 1 if values.secretsDetectionEnabled else 0 }}
+    secrets_scanning: ${{ 1 if values.secretsDetectionScanning else 0 }}
+    pr_based:
+      enabled: ${{ 1 if values.secretsDetectionPRs else 0 }}
+
+  # Static Application Security Testing (SAST)
+  sast:
+    enabled: ${{ 1 if values.sastEnabled else 0 }}
+    tools:
+      codeQL:
+        enabled: ${{ 1 if values.codeQLEnabled else 0 }}
+        config_file_path: ${{ values.codeQLConfigFilePath }}
+      veracode:
+        enabled: ${{ 1 if values.veracodeEnabled else 0 }}
+      sonarcloud:
+        enabled: ${{ 1 if values.sonarcloudEnabled else 0 }}
+      sobelow:
+        enabled: ${{ 1 if values.sobelowEnabled else 0 }}
+      credo:
+        enabled: ${{ 1 if values.credoEnabled else 0 }}
+      klocwork:
+        enabled: ${{ 1 if values.klocworkEnabled else 0 }}

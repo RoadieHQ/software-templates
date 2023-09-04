@@ -1,0 +1,110 @@
+---
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: add-security-tools-yaml
+  title: Add security tools YAML
+  description: The security tools YAML helps InfoSec to understand which security tools your project is using. This template is an easy way to create the file.
+spec:
+  owner: group:default/engineering
+  type: file
+
+  parameters:
+    - title: Where is your codebase?
+      required:
+        - repoName
+      properties:
+        repoHost:
+          type: string
+          default: github.com
+          ui:widget: hidden
+        repoOwner:
+          type: string
+          default: sumup
+          ui:widget: hidden
+        repoName:
+          title: Repository name
+          type: string
+
+    - title: Who owns the codebase?
+      required:
+        - tribe
+        - squad
+      properties:
+        tribe:
+          title: Tribe Name
+          type: string
+        squad:
+          title: Tribe Name
+          type: string
+
+
+    - title: Secrets Detection
+      properties:
+        secretsDetectionEnabled:
+          title: Is secrets detection enabled on the repo?
+          type: boolean
+        secretsDetectionScanning:
+          title: Is secrets detection scanning enabled on the repo?
+          type: boolean
+        secretsDetectionPRs:
+          title: Are automated PRs opened against scanned repos?
+          type: boolean
+
+    - title: Static Application Security Testing (SAST)
+      properties:
+        sastEnabled:
+          title: Is SAST enabled on your repo?
+          type: boolean
+        codeQLEnabled:
+          title: Is CodeQL enabled on the repo?
+          type: boolean
+        codeQLConfigFilePath:
+          title: CodeQL file path
+          type: string
+          default: '.github/workflows/codeql.yml'
+        veracodeEnabled:
+          title: Is Veracode enabled on the repo?
+          type: boolean
+        sonarcloudEnabled:
+          title: Is SonarCloud enabled on the repo?
+          type: boolean
+        sobelowEnabled:
+          title: Is Sobelow enabled on the repo?
+          type: boolean
+        credoEnabled:
+          title: Is Credo enabled on the repo?
+          type: boolean
+        klocworkEnabled:
+          title: Is klocwork enabled on the repo?
+          type: boolean
+
+  steps:
+      - id: fetch-template
+        action: fetch:template
+        input:
+          url: ./skeleton
+          templateFileExtension: .njk
+          values:
+            repoOrg: ${{ parameters.repoOwner }}
+            repoSlug: ${{ parameters.repoSlug }}
+            secretsDetectionEnabled: ${{ parameters.secretsDetectionEnabled }}
+            secretsDetectionScanning: ${{ parameters.secretsDetectionScanning }}
+            secretsDetectionPRs: ${{ parameters.secretsDetectionPRs }}
+            sastEnabled: ${{ parameters.sastEnabled }}
+            codeQLEnabled: ${{ parameters.codeQLEnabled }}
+            codeQLConfigFilePath: ${{ parameters.codeQLConfigFilePath }}
+            veracodeEnabled: ${{ parameters.veracodeEnabled }}
+            sonarcloudEnabled: ${{ parameters.sonarcloudEnabled }}
+            sobelowEnabled: ${{ parameters.sobelowEnabled }}
+            credoEnabled: ${{ parameters.credoEnabled }}
+            klocworkEnabled: ${{ parameters.klocworkEnabled }}
+
+      - id: create-pull-request
+        name: create-pull-request
+        action: publish:github:pull-request
+        input:
+          repoUrl: ${{ parameters.repoHost }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
+          branchName: add-security-tools-yaml
+          title: Add security tools YAML file
+          description: The security tools YAML helps InfoSec to understand which security tools your project is using.
