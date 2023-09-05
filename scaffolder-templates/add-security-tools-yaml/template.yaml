@@ -118,4 +118,10 @@ spec:
           It's created via a [scaffolder template on Roadie](https://example.com).
 
   output:
-    remoteUrl: ${{ steps.createPullRequest.output.remoteUrl }}
+    links:
+      - title: Repository
+        icon: github
+        url: ${{ steps['createPullRequest'].output.remoteUrl }}
+      - title: Security Tools Documentation
+        icon: help
+        url: https://example.com
