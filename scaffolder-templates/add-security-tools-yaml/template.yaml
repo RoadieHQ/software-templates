@@ -104,13 +104,18 @@ spec:
           klocworkEnabled: ${{ parameters.klocworkEnabled }}
 
     - id: createPullRequest
-      name: Open a PR on the repo
+      name: Open a PR
       action: publish:github:pull-request
       input:
         repoUrl: ${{ parameters.repoHost }}?owner=${{ parameters.repoOrg }}&repo=${{ parameters.repoName }}
-        branchName: add-security-tools-yaml
+        # We append 'now' to the branch name to make the branch name unique. Otherwise the step will fail
+        # if we run it against the same repo twice.
+        branchName: add-security-tools-yaml-${{ '' | now }}
         title: Add security tools YAML file
-        description: The security tools YAML helps InfoSec to understand which security tools your project is using.
+        # This shows up in the body of the PR. You can use markdown.
+        description: |
+          The security tools YAML helps InfoSec to understand which security tools your project is using.
+          It's created via a [scaffolder template on Roadie](https://example.com).
 
   output:
     remoteUrl: ${{ steps.createPullRequest.output.remoteUrl }}
