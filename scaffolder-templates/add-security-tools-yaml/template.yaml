@@ -119,9 +119,9 @@ spec:
 
   output:
     links:
-      - title: Repository
+      - title: View the pull request on GitHub
         icon: github
         url: ${{ steps['createPullRequest'].output.remoteUrl }}
-      - title: Security Tools Documentation
+      - title: Read the Security Tools Documentation
         icon: help
         url: https://example.com
