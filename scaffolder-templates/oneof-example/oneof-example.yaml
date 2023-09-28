@@ -1,0 +1,31 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: oneof-example
+  description: An advanced template
+spec:
+  type: service
+  owner: user:guest
+  parameters:
+    - title: Select an Environment
+      type: object
+      oneOf: 
+      - properties:
+          lorem:
+            type: string
+        required:
+          - lorem
+        title: "Lorem"
+      - properties:
+          ipsum:
+            type: string
+        required:
+          - ipsum
+        title: "Ipsum"
+
+  steps:
+    - id: log
+      name: Log
+      action: debug:log
+      input:
+        message: ${{ parameters.lorem }} ${{ parameters.ipsum }}
