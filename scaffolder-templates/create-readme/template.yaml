@@ -1,0 +1,56 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: create-readme-in-repo
+  title: Create a README
+  description: Create a new PR with a basic README file.
+spec:
+  owner: group:roadiehq/engineering
+  type: file
+
+  parameters:
+    - title: What is your service about?
+      required:
+        - name
+      properties:
+        name:
+          title: Service name
+          type: string
+          description: Human readable name.
+
+    - title: Where is your codebase?
+      required:
+        - repoName
+      properties:
+        repoHost:
+          type: string
+          default: github.com
+          ui:widget: hidden
+        repoOrg:
+          type: string
+          default: roadiehq # Change this to match the name of your GitHub org
+          ui:widget: hidden
+        repoName:
+          title: Repository name
+          type: string
+
+  steps:
+      - id: fetch-template
+        action: fetch:template
+        input:
+          url: ./skeleton
+          templateFileExtension: .njk
+          values:
+            name: ${{ parameters.name }}
+
+      - id: create-pull-request
+        name: create-pull-request
+        action: publish:github:pull-request
+        input:
+          repoUrl: ${{ parameters.repoHost }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoSlug }}
+        branchName: add-readme-${{ '' | now }}
+          title: Add a README file
+          description: |
+            This PR adds a basic README file to this repository.
+
+            It was created via a [scaffolder template on Roadie](https://example.com).
