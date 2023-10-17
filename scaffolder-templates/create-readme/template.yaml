@@ -9,15 +9,6 @@ spec:
   type: file
 
   parameters:
-    - title: What is your service about?
-      required:
-        - name
-      properties:
-        name:
-          title: Service name
-          type: string
-          description: Human readable name.
-
     - title: Where is your codebase?
       required:
         - repoName
@@ -34,23 +25,41 @@ spec:
           title: Repository name
           type: string
 
+    - title: What is your service about?
+      required:
+        - name
+      properties:
+        name:
+          title: Service name
+          type: string
+          description: Human readable name.
+
   steps:
-      - id: fetch-template
-        action: fetch:template
-        input:
-          url: ./skeleton
-          templateFileExtension: .njk
-          values:
-            name: ${{ parameters.name }}
+    - id: fetchTemplate
+      action: fetch:template
+      input:
+        url: ./skeleton
+        templateFileExtension: .njk
+        values:
+          name: ${{ parameters.name }}
 
-      - id: create-pull-request
-        name: create-pull-request
-        action: publish:github:pull-request
-        input:
-          repoUrl: ${{ parameters.repoHost }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoSlug }}
-          branchName: add-readme-${{ '' | now }}
-          title: Add a README file
-          description: |
-            This PR adds a basic README file to this repository.
+    - id: createPullRequest
+      name: create-pull-request
+      action: publish:github:pull-request
+      input:
+        repoUrl: ${{ parameters.repoHost }}?owner=${{ parameters.repoOrg }}&repo=${{ parameters.repoName }}
+        branchName: add-readme-${{ '' | now }}
+        title: Add a README file
+        description: |
+          This PR adds a basic README file to this repository.
 
-            It was created via a [scaffolder template on Roadie](https://example.com).
+          It was created via a [scaffolder template on Roadie](https://example.com).
+
+  output:
+    links:
+      - title: View the pull request on GitHub
+        icon: github
+        url: ${{ steps['createPullRequest'].output.remoteUrl }}
+      - title: Learn about writing READMEs
+        icon: help
+        url: https://example.com
