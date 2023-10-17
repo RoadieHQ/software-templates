@@ -48,7 +48,7 @@ spec:
         action: publish:github:pull-request
         input:
           repoUrl: ${{ parameters.repoHost }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoSlug }}
-        branchName: add-readme-${{ '' | now }}
+          branchName: add-readme-${{ '' | now }}
           title: Add a README file
           description: |
             This PR adds a basic README file to this repository.
