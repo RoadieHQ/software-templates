@@ -6,7 +6,7 @@ metadata:
   title: Onboard your service to Backstage
   description: Create a new PR with your service's details.
 spec:
-  owner: group:default/engineering
+  owner: group:roadiehq/engineering
   type: service
 
   parameters:
