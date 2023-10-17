@@ -1,0 +1,74 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: add-branch-protection
+  title: Add Branch Protection
+  description: Turn on branch protection with some sensible defaults.
+
+spec:
+  owner: group:roadiehq/engineering
+  type: file
+
+  parameters:
+    - title: Where is your codebase?
+      required:
+        - repoName
+      properties:
+        repoHost:
+          type: string
+          default: github.com
+          ui:widget: hidden
+        repoOrg:
+          type: string
+          default: roadiehq # Change this to match the name of your GitHub org
+          ui:widget: hidden
+        repoName:
+          title: Repository name
+          type: string
+        branch:
+          title: Default branch
+          type: string
+          default: main
+
+    - title: Branch protection settings
+      properties:
+        allowForcePushes:
+          title: Allow force pushes
+          type: boolean
+          default: false
+        requiredApprovingRevewCount:
+          title: Approving reviews required to merge
+          type: number
+          default: 1
+
+
+  steps:
+    - id: callGitHubApi
+      name: Turn on branch protection
+      action: http:backstage:request
+      input:
+        method: 'PUT'
+        path: /proxy/mygithub/api/repos/${{ parameters.repoOrg }}/${{ parameters.repoName }}/branches/${{ parameters.branch }}/protection
+        headers:
+          content-type: 'application/json'
+        body:
+          required_status_checks: null
+          enforce_admins: true
+          required_pull_request_reviews:
+            dismiss_stale_reviews: true
+            required_approving_review_count: ${{ parameters.requiredApprovingRevewCount }}
+            require_last_push_approval: true
+          restrictions: null
+          required_linear_history: false
+          allow_force_pushes: ${{ parameters.allowForcePushes }}
+          allow_deletions: true
+          block_creations: false
+          required_conversation_resolution: false
+          lock_branch: false
+          allow_fork_syncing: true
+
+  output:
+    links:
+      - title: Go to branch protection settings
+        icon: github
+        url: https://github.com/${{ parameters.repoOrg }}/${{ parameters.repoName }}/settings/branches
