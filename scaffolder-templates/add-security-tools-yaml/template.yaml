@@ -6,7 +6,7 @@ metadata:
   title: Add security tools YAML
   description: The security tools YAML helps InfoSec to understand which security tools your project is using. This template is an easy way to create the file.
 spec:
-  owner: group:default/engineering
+  owner: group:roadiehq/engineering
   type: file
 
   parameters:
