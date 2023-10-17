@@ -9,9 +9,10 @@ spec:
   type: file
 
   parameters:
-    - title: Where is your codebase?
+    - title: Basic info
       required:
         - repoName
+        - name
       properties:
         repoHost:
           type: string
@@ -24,15 +25,9 @@ spec:
         repoName:
           title: Repository name
           type: string
-
-    - title: What is your service about?
-      required:
-        - name
-      properties:
         name:
-          title: Service name
+          title: Human readable service name
           type: string
-          description: Human readable name.
 
   steps:
     - id: fetchTemplate
