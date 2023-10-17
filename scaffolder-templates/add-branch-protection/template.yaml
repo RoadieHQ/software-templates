@@ -66,3 +66,13 @@ spec:
           required_conversation_resolution: false
           lock_branch: false
           allow_fork_syncing: true
+
+
+
+
+
+  output:
+    links:
+      - title: Go to branch protection settings
+        icon: github
+        url: https://github.com/${{ properties.repoOrg }}/${{ properties.repoName }}/settings/branches
