@@ -47,7 +47,7 @@ spec:
       name: Turn on branch protection
       action: http:backstage:request
       input:
-        method: 'POST'
+        method: 'PUT'
         path: /proxy/mygithub/api/repos/${{ parameters.repoOrg }}/${{ parameters.repoName }}/branches/${{ parameters.branch }}/protection
         headers:
           content-type: 'application/json'
