@@ -12,7 +12,6 @@ spec:
     - title: Basic info
       required:
         - repoName
-        - name
       properties:
         repoHost:
           type: string
