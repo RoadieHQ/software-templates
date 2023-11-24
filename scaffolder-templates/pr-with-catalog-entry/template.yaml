@@ -94,7 +94,7 @@ spec:
         action: publish:github:pull-request
         input:
           repoUrl: ${{ parameters.repoHost }}?owner=${{ parameters.repoOrg }}&repo=${{ parameters.repoSlug }}
-          branchName: onboard-to-catalog
+        branchName: onboard-to-catalog-${{ '' | now }}
           title: Onboard service to Catalog
           description: This PR adds a metadata file about this service so that it can be registered in our software catalog.
 
