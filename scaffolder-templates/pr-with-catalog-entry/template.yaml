@@ -73,30 +73,30 @@ spec:
           type: string
 
   steps:
-      - id: fetchTemplate
-        action: fetch:template
-        input:
-          url: ./skeleton
-          templateFileExtension: .njk
-          values:
-            name: ${{ parameters.name }}
-            description: ${{ parameters.description }}
-            owner: ${{ parameters.owner }}
-            type: ${{ parameters.type }}
-            repoOrg: ${{ parameters.repoOrg }}
-            repoSlug: ${{ parameters.repoSlug }}
-            argoAppName: ${{ parameters.argoAppName }}
-            pagerdutyServiceId: ${{ parameters.pagerdutyServiceId }}
-            lifecycle: ${{ parameters.lifecycle }}
+    - id: fetchTemplate
+      action: fetch:template
+      input:
+        url: ./skeleton
+        templateFileExtension: .njk
+        values:
+          name: ${{ parameters.name }}
+          description: ${{ parameters.description }}
+          owner: ${{ parameters.owner }}
+          type: ${{ parameters.type }}
+          repoOrg: ${{ parameters.repoOrg }}
+          repoSlug: ${{ parameters.repoSlug }}
+          argoAppName: ${{ parameters.argoAppName }}
+          pagerdutyServiceId: ${{ parameters.pagerdutyServiceId }}
+          lifecycle: ${{ parameters.lifecycle }}
 
-      - id: createPullRequest
-        name: createPullRequest
-        action: publish:github:pull-request
-        input:
-          repoUrl: ${{ parameters.repoHost }}?owner=${{ parameters.repoOrg }}&repo=${{ parameters.repoSlug }}
+    - id: createPullRequest
+      name: createPullRequest
+      action: publish:github:pull-request
+      input:
+        repoUrl: ${{ parameters.repoHost }}?owner=${{ parameters.repoOrg }}&repo=${{ parameters.repoSlug }}
         branchName: onboard-to-catalog-${{ '' | now }}
-          title: Onboard service to Catalog
-          description: This PR adds a metadata file about this service so that it can be registered in our software catalog.
+        title: Onboard service to Catalog
+        description: This PR adds a metadata file about this service so that it can be registered in our software catalog.
 
   output:
     links:
