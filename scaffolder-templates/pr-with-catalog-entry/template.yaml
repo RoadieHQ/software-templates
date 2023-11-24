@@ -55,13 +55,12 @@ spec:
           type: string
           default: github.com
           ui:widget: hidden
-        repoOwner:
-          title: Repository owner
+        repoOrg:
           type: string
-          default: roadiehq
-          enum: ['roadiehq']
+          default: roadiehq # Change this to match the name of your GitHub org
+          ui:widget: hidden
         repoSlug:
-          title: Repository slug
+          title: Repository name
           type: string
 
     - title: Integrations (optional)
