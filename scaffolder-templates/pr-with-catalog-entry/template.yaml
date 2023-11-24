@@ -83,7 +83,7 @@ spec:
             description: ${{ parameters.description }}
             owner: ${{ parameters.owner }}
             type: ${{ parameters.type }}
-            repoOrg: ${{ parameters.repoOwner }}
+            repoOrg: ${{ parameters.repoOrg }}
             repoSlug: ${{ parameters.repoSlug }}
             argoAppName: ${{ parameters.argoAppName }}
             pagerdutyServiceId: ${{ parameters.pagerdutyServiceId }}
@@ -93,7 +93,7 @@ spec:
         name: createPullRequest
         action: publish:github:pull-request
         input:
-          repoUrl: ${{ parameters.repoHost }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoSlug }}
+          repoUrl: ${{ parameters.repoHost }}?owner=${{ parameters.repoOrg }}&repo=${{ parameters.repoSlug }}
           branchName: onboard-to-catalog
           title: Onboard service to Catalog
           description: This PR adds a metadata file about this service so that it can be registered in our software catalog.
