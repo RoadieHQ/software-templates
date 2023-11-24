@@ -7,7 +7,8 @@ metadata:
   annotations:
     github.com/project-slug: ${{ values.repoOrg }}/${{ values.repoSlug }}
     {%if values.argoAppName %}argocd/app-name: ${{values.argoAppName}} {% endif %}
-    {%if values.pagerdutyKey %}pagerduty.com/integration-key: ${{values.pagerdutyKey}} {% endif %}
+    {%if values.pagerdutyServiceId %}pagerduty.com/service-id: ${{values.pagerdutyServiceId}} {% endif %}
 spec:
-  type: service
+  type: ${{ values.type }}
   owner: ${{ values.owner }}
+  lifecycle: ${{ values.lifecycle }}
