@@ -40,7 +40,7 @@
     "@backstage/core-app-api": "^1.8.1",
     "@backstage/dev-utils": "^1.0.16",
     "@backstage/test-utils": "^1.4.0",
-    "@roadiehq/roadie-cli": "^0.0.2-beta-5",
+    "@roadiehq/roadie-cli": "^1.1.1",
     "@testing-library/jest-dom": "^5.10.1",
     "@testing-library/react": "^12.1.3",
     "@testing-library/user-event": "^14.0.0",
