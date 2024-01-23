@@ -31,12 +31,12 @@ spec:
           enum: ['dev', 'prod']
             
   steps:
-    - id: deleteTenant
-      name: Delete tenant
+    - id: deleteDevTenant
+      name: Delete Dev tenant
+      if: ${{parameters.tenant_environment === 'dev'}}
       action: http:backstage:request
       input:
         method: 'DELETE'
-        # path: /api/proxy/${{ '' if parameters.tenant_environment === 'prod' else 'dev-' }}tenant-manager/api/tenant
         path: /api/proxy/dev-tenant-manager/api/tenant
         headers:
           # This is specified here rather than in the proxy in order to ensure that
@@ -46,6 +46,23 @@ spec:
           tenantName: ${{ parameters.tenant_name }}
           tenantEmailDomain: ${{ parameters.tenant_email_domain }}
           tenantEnvironment: dev
+          skipFailures: true
+    
+    - id: deleteProdTenant
+      name: Delete Prod tenant
+      if: ${{parameters.tenant_environment === 'prod'}}
+      action: http:backstage:request
+      input:
+        method: 'DELETE'
+        path: /api/proxy/tenant-manager/api/tenant
+        headers:
+          # This is specified here rather than in the proxy in order to ensure that
+          # http:backstage:request treats the body as JSON.
+          content-type: 'application/json'
+        body:
+          tenantName: ${{ parameters.tenant_name }}
+          tenantEmailDomain: ${{ parameters.tenant_email_domain }}
+          tenantEnvironment: prod
           skipFailures: true
 
   output:
