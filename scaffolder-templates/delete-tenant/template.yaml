@@ -14,6 +14,7 @@ spec:
         - tenant_name
         - tenant_email_domain
         - tenant_environment
+        - s3_emptied
       properties:
         tenant_name:
           title: Name
@@ -29,6 +30,10 @@ spec:
           type: string
           default: dev
           enum: ['dev', 'prod']
+        s3_emptied:
+          title: Have you emptied the tenants S3 Bucket?
+          type: boolean
+          ui:widget: radio
             
   steps:
     - id: deleteDevTenant
@@ -37,12 +42,7 @@ spec:
       action: http:backstage:request
       input:
         method: 'DELETE'
-        path: proxy/dev-tenant-manager/api/tenant
-        headers:
-          # This is specified here rather than in the proxy in order to ensure that
-          # http:backstage:request treats the body as JSON.
-          content-type: 'application/json'
-          Slack-Team-Id: 'TUU4TL8JZ'
+        path: proxy/tenant-manager-dev/api/tenant
         body:
           tenantName: ${{ parameters.tenant_name }}
           tenantEmailDomain: ${{ parameters.tenant_email_domain }}
@@ -56,11 +56,6 @@ spec:
       input:
         method: 'DELETE'
         path: proxy/tenant-manager/api/tenant
-        headers:
-          # This is specified here rather than in the proxy in order to ensure that
-          # http:backstage:request treats the body as JSON.
-          content-type: 'application/json'
-          Slack-Team-Id: 'TUU4TL8JZ'
         body:
           tenantName: ${{ parameters.tenant_name }}
           tenantEmailDomain: ${{ parameters.tenant_email_domain }}
