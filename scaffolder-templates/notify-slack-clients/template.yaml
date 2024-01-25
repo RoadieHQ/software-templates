@@ -26,8 +26,7 @@ spec:
         header: 
           - Content-type: application/json
         path: /proxy/client-notification/TUU4TL8JZ/B06F0DMNAET/uDYlSkU8b4vVH8SMFuU9HF3l
-        body:
-          text: "${{ parameters.message}}" #'{ type: section, text: { type: mrkdwn, text: ${{ parameters.message}} }'
+        body: "{ 'text': '${{ parameters.message }}' }" #'{ type: section, text: { type: mrkdwn, text: ${{ parameters.message}} }'
     - id: log request
       name: Message Sent
       action: debug:log
