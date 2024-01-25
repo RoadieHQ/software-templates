@@ -45,9 +45,9 @@ spec:
         path: proxy/tenant-manager-dev/api/tenant
         body: |
               {
-                'tenantName': '${{ parameters.tenant_name }}'
-                'tenantEmailDomain': '${{ parameters.tenant_email_domain }}'
-                'tenantEnvironment': 'dev'
+                'tenantName': '${{ parameters.tenant_name }}',
+                'tenantEmailDomain': '${{ parameters.tenant_email_domain }}',
+                'tenantEnvironment': 'dev',
                 'skipFailures': true
               }
 
@@ -60,9 +60,9 @@ spec:
         path: proxy/tenant-manager/api/tenant
         body: |
               {
-                'tenantName': '${{ parameters.tenant_name }}'
-                'tenantEmailDomain': '${{ parameters.tenant_email_domain }}'
-                'tenantEnvironment': 'prod'
+                'tenantName': '${{ parameters.tenant_name }}',
+                'tenantEmailDomain': '${{ parameters.tenant_email_domain }}',
+                'tenantEnvironment': 'prod',
                 'skipFailures': true
               }
 
