@@ -43,12 +43,14 @@ spec:
       input:
         method: 'DELETE'
         path: proxy/tenant-manager-dev/api/tenant
-        body:
-          tenantName: ${{ parameters.tenant_name }}
-          tenantEmailDomain: ${{ parameters.tenant_email_domain }}
-          tenantEnvironment: dev
-          skipFailures: true
-    
+        body: |
+              {
+                'tenantName': '${{ parameters.tenant_name }}'
+                'tenantEmailDomain': '${{ parameters.tenant_email_domain }}'
+                'tenantEnvironment': 'dev'
+                'skipFailures': true
+              }
+
     - id: deleteProdTenant
       name: Delete Prod tenant
       if: ${{parameters.tenant_environment === 'prod'}}
@@ -56,11 +58,13 @@ spec:
       input:
         method: 'DELETE'
         path: proxy/tenant-manager/api/tenant
-        body:
-          tenantName: ${{ parameters.tenant_name }}
-          tenantEmailDomain: ${{ parameters.tenant_email_domain }}
-          tenantEnvironment: prod
-          skipFailures: true
+        body: |
+              {
+                'tenantName': '${{ parameters.tenant_name }}'
+                'tenantEmailDomain': '${{ parameters.tenant_email_domain }}'
+                'tenantEnvironment': 'prod'
+                'skipFailures': true
+              }
 
   output:
     resp: ${{ steps.callTenantManager.output.body }}
