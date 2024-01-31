@@ -64,6 +64,7 @@ spec:
                 "tenantEmailDomain": "${{ parameters.tenant_email_domain }}",
                 "tenantEnvironment": "prod",
                 "skipFailures": false
+              }
 
   output:
     resp: ${{ steps.deleteProdTenant.output.body }}
