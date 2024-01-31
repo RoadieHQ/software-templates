@@ -47,6 +47,7 @@ spec:
               {
                 "tenantName": "${{ parameters.tenant_name }}",
                 "tenantEmailDomain": "${{ parameters.tenant_email_domain }}",
+                "adminEmail": "${{ parameters.admin_email }}",
                 "tenantEnvironment": "dev",
                 "skipFailures": false
               }
@@ -62,6 +63,7 @@ spec:
               {
                 "tenantName": "${{ parameters.tenant_name }}",
                 "tenantEmailDomain": "${{ parameters.tenant_email_domain }}",
+                "adminEmail": "${{ parameters.admin_email }}",
                 "tenantEnvironment": "prod",
                 "skipFailures": false
               }
