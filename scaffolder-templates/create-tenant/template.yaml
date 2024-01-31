@@ -36,22 +36,34 @@ spec:
           enum: ['dev', 'prod']
             
   steps:
-    - id: createTenant
-      name: Create tenant
+    - id: deleteDevTenant
+      name: Delete Dev tenant
+      if: ${{parameters.tenant_environment === 'dev'}}
       action: http:backstage:request
       input:
         method: 'POST'
-        path: /api/proxy/dev-tenant-manager/api/tenant
-        headers:
-          # This is specified here rather than in the proxy in order to ensure that
-          # http:backstage:request treats the body as JSON.
-          content-type: 'application/json'
-        body:
-          adminEmail: ${{ parameters.admin_email }}
-          tenantName: ${{ parameters.tenant_name }}
-          tenantEmailDomain: ${{ parameters.tenant_email_domain }}
-          tenantEnvironment: dev
-          skipFailures: true
+        path: proxy/tenant-manager-dev/api/tenant
+        body: |
+              {
+                "tenantName": "${{ parameters.tenant_name }}",
+                "tenantEmailDomain": "${{ parameters.tenant_email_domain }}",
+                "tenantEnvironment": "dev",
+                "skipFailures": false
+              }
+
+    - id: deleteProdTenant
+      name: Delete Prod tenant
+      if: ${{parameters.tenant_environment === 'prod'}}
+      action: http:backstage:request
+      input:
+        method: 'POST'
+        path: proxy/tenant-manager/api/tenant
+        body: |
+              {
+                "tenantName": "${{ parameters.tenant_name }}",
+                "tenantEmailDomain": "${{ parameters.tenant_email_domain }}",
+                "tenantEnvironment": "prod",
+                "skipFailures": false
 
   output:
-    resp: ${{ steps.callTenantManager.output.body }}
+    resp: ${{ steps.deleteProdTenant.output.body }}
