@@ -36,8 +36,8 @@ spec:
           ui:widget: radio
             
   steps:
-    - id: deleteDevTenant
-      name: Delete Dev tenant
+    - id: devTenantCheck
+      name: Check if Dev tenant
       if: ${{parameters.tenant_environment === 'dev'}}
       action: http:backstage:request
       input:
@@ -51,8 +51,8 @@ spec:
                 "skipFailures": false
               }
 
-    - id: deleteProdTenant
-      name: Delete Prod tenant
+    - id: ProdTenantCheck
+      name: Check if Prod tenant
       if: ${{parameters.tenant_environment === 'prod'}}
       action: http:backstage:request
       input:
@@ -67,4 +67,4 @@ spec:
               }
 
   output:
-    resp: ${{ steps.deleteDevTenant.output.body }} ${{ steps.deleteProdTenant.output.body }}
+    resp: ${{ steps.devTenantCheck.output.body }} ${{ steps.ProdTenantCheck.output.body }}
