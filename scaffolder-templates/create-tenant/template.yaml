@@ -6,7 +6,7 @@ metadata:
   description: Send an API call to the tenant manager to create a tenant.
 
 spec:
-  owner: user:dtuite
+  owner: user:ianlink
   type: none
   parameters:
     - title: Provide some simple information
@@ -36,8 +36,8 @@ spec:
           enum: ['dev', 'prod']
             
   steps:
-    - id: deleteDevTenant
-      name: Delete Dev tenant
+    - id: createDevTenant
+      name: Create Dev tenant
       if: ${{parameters.tenant_environment === 'dev'}}
       action: http:backstage:request
       input:
@@ -52,8 +52,8 @@ spec:
                 "skipFailures": false
               }
 
-    - id: deleteProdTenant
-      name: Delete Prod tenant
+    - id: createProdTenant
+      name: Create Prod tenant
       if: ${{parameters.tenant_environment === 'prod'}}
       action: http:backstage:request
       input:
@@ -69,4 +69,4 @@ spec:
               }
 
   output:
-    resp: ${{ steps.deleteProdTenant.output.body }}
+    resp: ${{ steps.createDevTenant.output.body }} ${{ steps.createProdTenant.output.body }}

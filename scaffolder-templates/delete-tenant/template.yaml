@@ -6,7 +6,7 @@ metadata:
   description: Send an API call to the tenant manager to delete a tenant.
 
 spec:
-  owner: user:dtuite
+  owner: user:ianlink
   type: none
   parameters:
     - title: Provide some simple information
@@ -67,4 +67,4 @@ spec:
               }
 
   output:
-    resp: ${{ steps.callTenantManager.output.body }}
+    resp: ${{ steps.deleteDevTenant.output.body }} ${{ steps.deleteProdTenant.output.body }}
