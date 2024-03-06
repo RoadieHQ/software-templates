@@ -43,8 +43,7 @@ spec:
           ui:options:
             allowedHosts:
               - github.com
-            allowedOwners:
-              - RoadieHQ
+
             
   steps:
     - id: template
