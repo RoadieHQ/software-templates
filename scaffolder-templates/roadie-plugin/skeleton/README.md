@@ -19,7 +19,7 @@ The folder `packages` hosts the actual plugins and code files related to them in
 This repository needs `node.js` (> 18.x) and `NPM` installed.
 
 To install needed dependencies, run:
-`npm i` or `npm install`
+`npm i -f` or `npm install --force`
 
 ### Running and developing plugins
 
