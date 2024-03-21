@@ -1,7 +1,7 @@
 {
-  "name": "roadie-agent-entity-provider",
+  "name": "roadie-agent-scaffolder-action",
   "version": "1.0.0",
-  "description": "A Roadie Agent Entity Provider.",
+  "description": "A Roadie Agent Scaffolder Action.",
   "main": "index.js",
   "repository": "https://github.com/${{ values.repo_owner }}/${{ values.repo_name }}",
   "author": "${{ values.repo_owner }}",

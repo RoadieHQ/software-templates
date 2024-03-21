@@ -3,9 +3,7 @@ import { myEntityHandler } from './myEntityHandler.js';
 
 RoadieAgent.fromConfig({
     server: 'https://${{ values.tenant }}.broker.roadie.so',
-    port: 7342,
     accept: `${process.cwd()}/config/accept.json`,
-    agentPort: 7044,
     identifier: process.env.BROKER_TOKEN
   })
   .addEntityProvider(createRoadieAgentEntityProvider({
