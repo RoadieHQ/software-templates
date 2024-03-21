@@ -1,0 +1,15 @@
+{
+  "private": [
+    {
+      "method": "POST",
+      "path": "/scaffolder-action/*",
+      "origin": "http://localhost:7044"
+    }
+  ],
+  "public": [
+    {
+      "method": "any",
+      "path": "/*"
+    }
+  ]
+}
