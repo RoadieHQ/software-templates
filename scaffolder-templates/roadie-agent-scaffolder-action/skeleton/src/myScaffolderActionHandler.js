@@ -1,8 +1,8 @@
 import { writeFileSync } from "fs";
 
-export const myScaffolderActionHandler = async ({ log, payload, workspacePath }) => {
-  const greeting = `Hello, ${payload.body['name'] || 'world!'}`
-  await log(greeting);
-  writeFileSync(`${workspacePath}/greeting.txt`, greeting);
+export const myScaffolderActionHandler = async (context) => {
+  const greeting = `Hello, ${context.payload.body['name'] || 'world!'}`
+  await log(context.greeting);
+  writeFileSync(`${context.workspacePath}/greeting.txt`, greeting);
 }
 
