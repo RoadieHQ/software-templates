@@ -36,8 +36,8 @@ spec:
           enum: ['dev', 'prod']
             
   steps:
-    - id: createDevTenant
-      name: Create Dev tenant
+    - id: devTenantCheck
+      name: Check if Dev tenant
       if: ${{parameters.tenant_environment === 'dev'}}
       action: http:backstage:request
       input:
@@ -52,8 +52,8 @@ spec:
                 "skipFailures": false
               }
 
-    - id: createProdTenant
-      name: Create Prod tenant
+    - id: ProdTenantCheck
+      name: Check if Prod tenant
       if: ${{parameters.tenant_environment === 'prod'}}
       action: http:backstage:request
       input:
@@ -67,6 +67,6 @@ spec:
                 "tenantEnvironment": "prod",
                 "skipFailures": false
               }
-
+  
   output:
-    resp: ${{ steps.createDevTenant.output.body }} ${{ steps.createProdTenant.output.body }}
+    resp: ${{ steps.devTenantCheck.output.body }} ${{ steps.ProdTenantCheck.output.body }}
