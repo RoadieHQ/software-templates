@@ -11,6 +11,6 @@
     "start": "node src/index.js"
   },
   "dependencies": {
-    "@roadiehq/roadie-agent": "^1.1.2"
+    "@roadiehq/roadie-agent": "^1.1.3"
   }
 }
