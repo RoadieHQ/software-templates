@@ -1,9 +1,9 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: create-roadie-agent-scaffolder-action
-  title: Create Roadie Agent Scaffolder Action
-  description: Create a Roadie Agent service repository to execute a scaffolder action from your infrastructure
+  name: create-roadie-agent-scaffolder-action-mono-repo
+  title: Create Roadie Agent Scaffolder Action Repository
+  description: Create a Roadie Agent service repository to execute a scaffolder action from your infrastructure. You can run this once to create the repo, and then add multiple scaffolder actions in the created repo.
 
 spec:
   owner: info@roadie.io
@@ -12,16 +12,11 @@ spec:
     - title: Provide some simple information
       required:
         - agent_name
-        - tenant
       properties:
         agent_name:
           title: Name
           type: string
-          description: Unique name of the Roadie Agent Scaffolder Action.
-        tenant:
-          title: Tenant
-          type: string
-          description: Your Roadie tenant name. You can find this from the URL `https://<your-roadie-tenant>.roadie.so`.
+          description: Unique name of the Roadie Agent Scaffolder Action repository.
 
     - title: Choose a Source Control Management tool to store your Roadie Agent Service in.
       required:
@@ -43,7 +38,7 @@ spec:
         values:
           repo_name: ${{ (parameters.repoUrl | parseRepoUrl)["repo"] }}
           repo_owner: ${{ (parameters.repoUrl | parseRepoUrl)["owner"] }}
-          tenant: ${{ parameters.tenant }}
+          tenant: ${{ roadie.tenantName }}
           agent_name: ${{ parameters.agent_name }}
 
     - id: publish

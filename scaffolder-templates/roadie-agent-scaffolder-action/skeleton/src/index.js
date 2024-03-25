@@ -7,7 +7,7 @@ RoadieAgent.fromConfig({
     identifier: process.env.BROKER_TOKEN
   })
   .addScaffolderAction(createRoadieAgentScaffolderAction({
-    name: '${{ values.agent_name }}',
+    name: '${{ values.tenant }}',
     handler: myScaffolderActionHandler
   }))
   .start();
