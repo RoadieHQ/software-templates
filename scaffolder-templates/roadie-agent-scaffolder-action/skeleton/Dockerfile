@@ -1,6 +1,6 @@
 FROM node:18-alpine
 
-ARG TOKEN=example-broker-token
+ARG TOKEN=${{ values.agent_name }}
 
 ENV BROKER_TOKEN $TOKEN
 
