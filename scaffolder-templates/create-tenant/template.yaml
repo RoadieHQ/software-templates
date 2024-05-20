@@ -37,7 +37,7 @@ spec:
             
   steps:
     - id: createDevTenant
-      name: Create Dev tenant
+      name: Is it a Dev Tenant?
       if: ${{parameters.tenant_environment === 'dev'}}
       action: http:backstage:request
       input:
@@ -53,7 +53,7 @@ spec:
               }
 
     - id: createProdTenant
-      name: Create Prod tenant
+      name: Is it a Prod Tenant?
       if: ${{parameters.tenant_environment === 'prod'}}
       action: http:backstage:request
       input:

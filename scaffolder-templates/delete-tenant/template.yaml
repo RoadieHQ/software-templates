@@ -37,7 +37,7 @@ spec:
             
   steps:
     - id: deleteDevTenant
-      name: Delete Dev tenant
+      name: Is it a Dev Tenant?
       if: ${{parameters.tenant_environment === 'dev'}}
       action: http:backstage:request
       input:
@@ -52,7 +52,7 @@ spec:
               }
 
     - id: deleteProdTenant
-      name: Delete Prod tenant
+      name: Is it a Prod Tenant?
       if: ${{parameters.tenant_environment === 'prod'}}
       action: http:backstage:request
       input:
@@ -65,6 +65,25 @@ spec:
                 "tenantEnvironment": "prod",
                 "skipFailures": false
               }
+
+    - id: LogAction
+      name: Logging action
+      action: 'http:backstage:request'
+      input: 
+        method: 'POST'
+        path: /proxy/tenant-deletion-notification
+        body: |
+          {
+            'blocks': [
+              {
+                'type': 'section',
+                'text': {
+                  'type': 'mrkdwn',
+                  'text': '${{ user.entity.metadata.name }} has deleted tenant ${{ parameters.tenant_name }}.'
+                }
+              }
+            ]
+          }
 
   output:
     resp: ${{ steps.deleteDevTenant.output.body }} ${{ steps.deleteProdTenant.output.body }}
