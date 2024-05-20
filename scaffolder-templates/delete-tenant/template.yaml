@@ -66,11 +66,13 @@ spec:
                 "skipFailures": false
               }
 
-    - id: LogAction
+    - id: logAction
       name: Logging action
       action: 'http:backstage:request'
       input: 
         method: 'POST'
+        header: 
+          - Content-type: application/json
         path: /proxy/tenant-deletion-notification
         body: |
           {
@@ -86,4 +88,4 @@ spec:
           }
 
   output:
-    resp: ${{ steps.deleteDevTenant.output.body }} ${{ steps.deleteProdTenant.output.body }}
+    resp: ${{ steps.deleteDevTenant.output.body }} ${{ steps.deleteProdTenant.output.body }} ${{ steps.logAction.output.body }}
