@@ -15,6 +15,7 @@ spec:
         - tenant_email_domain
         - tenant_environment
         - s3_emptied
+        - alarm_removed
       properties:
         tenant_name:
           title: Name
@@ -34,7 +35,11 @@ spec:
           title: Have you emptied the tenants S3 Bucket?
           type: boolean
           ui:widget: radio
-            
+        alarm_removed:
+          title: Have you removed the pagerduty alert from roadie-infrastructure?
+          type: boolean
+          ui:widget: radio
+
   steps:
     - id: deleteDevTenant
       name: Is it a Dev Tenant?
@@ -68,6 +73,7 @@ spec:
 
     - id: logAction
       name: Logging action
+      if: ${{ parameters.s3_emptied and parameters.alarm_removed }}
       action: 'http:backstage:request'
       input: 
         method: 'POST'
