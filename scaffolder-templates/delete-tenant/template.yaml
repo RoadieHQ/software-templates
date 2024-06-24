@@ -42,8 +42,8 @@ spec:
 
   steps:
     - id: deleteDevTenant
-      name: Is it a Dev Tenant?
-      if: ${{parameters.tenant_environment === 'dev'}}
+      name: Delete development tenant
+      if: ${{ parameters.tenant_environment === 'dev' and parameters.s3_emptied and parameters.alarm_removed }}
       action: http:backstage:request
       input:
         method: 'DELETE'
@@ -57,8 +57,8 @@ spec:
               }
 
     - id: deleteProdTenant
-      name: Is it a Prod Tenant?
-      if: ${{parameters.tenant_environment === 'prod'}}
+      name: Delete production tenant
+      if: ${{ parameters.tenant_environment === 'prod' and parameters.s3_emptied and parameters.alarm_removed }}
       action: http:backstage:request
       input:
         method: 'DELETE'
@@ -71,8 +71,8 @@ spec:
                 "skipFailures": false
               }
 
-    - id: logAction
-      name: Logging action
+    - id: notify-tenant-deletion
+      name: Notify tenant deletion
       if: ${{ parameters.s3_emptied and parameters.alarm_removed }}
       action: 'http:backstage:request'
       input: 
