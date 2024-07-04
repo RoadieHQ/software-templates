@@ -1,0 +1,56 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: modify-alerts-tenant-list
+  title: Modify PagerDuty Tenant List
+  description: Add or Remove a tenant from the list we monitor and alert against.
+
+spec:
+  owner: user:ianlink
+  type: service
+
+  parameters:
+    - title: Provide some simple information
+      required:
+        - tenant_name
+      properties:
+        tenant_name:
+          title: Name
+          type: string
+          description: No special chars, numbers as the first char, or dashes as the first or last char. 
+          ui:autofocus: true
+            
+  steps:
+    - id: fetch-alerts-file
+      name: Fetch alerts file
+      action: fetch:plain
+      input:
+        url: "https://github.com/RoadieHQ/roadie-infrastructure/blob/main/terraform/account-resources-tf/deployments/prod/"
+        targetPath: 'fetch-folder'
+    - id: move-alerts-file-to-workbench
+      name: Move alerts file to a standalone location
+      action: fs:rename
+      input:
+        files:
+          - from: 'fetch-folder/alerting.tf'
+            to: './alerts-folder/alerting.tf'
+    - id: parse-catalog-alerts
+      name: Parse retrieved alerts file
+      action: roadiehq:utils:fs:parse
+      input:
+        path: './alerts-folder/alerting.tf'
+    - id: log-result
+      name: "TODO: Add Name"
+      action: debug:log
+      input:
+        message: "TODO: Add Message"
+    - id: add-tenant-to-list
+      name: Add tenant
+      action: roadiehq:utils:jsonata:yaml:transform
+      input:
+        path: './alerts-folder/alerting.tf'
+        loadAll: true
+        expression: '$ ~> | $.locals.alertable_tenants | $merge([$.locals.alertable_tenants, ${{parameters.tenant_name}}" } ]) |' 
+    
+  output:
+    resp: 
