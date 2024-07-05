@@ -32,13 +32,13 @@ spec:
       action: fs:rename
       input:
         files:
-          - from: 'fetch-folder/alerting.tf'
-            to: './alerts-folder/alerting.tf'
+          - from: 'fetch-folder/alertable_tenants.json'
+            to: './alerts-folder/alertable_tenants.json'
     - id: parse-alerts
       name: Parse retrieved alerts file
       action: roadiehq:utils:fs:parse
       input:
-        path: './alerts-folder/alerting.tf'
+        path: './alerts-folder/alertable_tenants.json'
     - id: log-result
       name: "Parse Alerts Output"
       action: debug:log
@@ -48,25 +48,25 @@ spec:
       name: Add tenant
       action: roadiehq:utils:jsonata:json:transform
       input:
-        path: './alerts-folder/alerting.tf'
+        path: './alerts-folder/alertable_tenants.json'
         loadAll: true
-        expression: '$ ~> | $.locals.alertable_tenants | $merge([$.locals.alertable_tenants, ${{parameters.tenant_name}}" } ]) |' 
+        expression: '$ ~> | $.tenant_slugs | $merge([$.locals.tenant_slugs, ${{parameters.tenant_name}}" } ]) |' 
     - id: write-alerts-to-file
       name: Overwrite the existing alerts file with new contents
       action: roadiehq:utils:fs:write
       input:
-        path: './alerts-folder/alerting.tf'
+        path: './alerts-folder/alertable_tenants.json'
         content: ${{ steps["add-tenant-to-list"].output.result }}
     - id: parse-alerts
       name: Parse modified Alerts file
       action: roadiehq:utils:fs:parse
       input:
-        path: './alerts-folder/alerting.tf'
+        path: './alerts-folder/alertable_tenants.json'
     - id: log-result
       name: Display modified alerts file
       action: debug:log
       input:
-        message: 'Alerting.tf content: ${{ steps["parse-alerts"].output.content }}'
+        message: 'alertable_tenants.json content: ${{ steps["parse-alerts"].output.content }}'
     - id: createPullRequest
       name: Create a pull request
       action: publish:github:pull-request
@@ -76,7 +76,7 @@ spec:
         repoUrl: github.com?repo=roadie-infrastructure&owner=RoadieHQ
         branchName: add-tenant-${{ '' | now }}
         title: Update Alerts with tenant
-        description: "This PR updates the Alerting.tf file with a new tenant slug."
+        description: "This PR updates the alertable_tenants.json file with a new tenant slug."
   output:
     links:
       - title: View the pull request on GitHub
