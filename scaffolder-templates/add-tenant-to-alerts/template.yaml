@@ -50,7 +50,7 @@ spec:
       input:
         path: './alerts-folder/alertable_tenants.json'
         loadAll: true
-        expression: '$ ~> | $ | $sort($append($.tenant_slugs, ${{parameters.tenant_name}})) |' 
+        expression: '$ ~> | $.tenant_slugs | $sort($append($.tenant_slugs, ${{parameters.tenant_name}})) |' 
     - id: write-alerts-to-file
       name: Overwrite the existing alerts file with new contents
       action: roadiehq:utils:fs:write
