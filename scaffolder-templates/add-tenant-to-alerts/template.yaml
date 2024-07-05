@@ -50,7 +50,7 @@ spec:
       input:
         path: './alerts-folder/alertable_tenants.json'
         loadAll: true
-        expression: '$ ~> | $.tenant_slugs | $sort($append($.tenant_slugs, ${{parameters.tenant_name}})) |' 
+        expression: '$ ~> | $ | $sort($append($.tenant_slugs, ${{parameters.tenant_name}})) |' 
     - id: write-alerts-to-file
       name: Overwrite the existing alerts file with new contents
       action: roadiehq:utils:fs:write
@@ -72,10 +72,10 @@ spec:
       action: publish:github:pull-request
       input:
         sourcePath: ./alerts-folder/
-        targetPath: ./
+        targetPath: ./terraform/account-resources-tf/deployments/prod/
         repoUrl: github.com?repo=roadie-infrastructure&owner=RoadieHQ
-        branchName: add-tenant-${{ '' | now }}
-        title: Update Alerts with tenant
+        branchName: add-tenant-${{parameters.tenant_name}}-${{ '' | now }}
+        title: Update Alerts with tenant ${{parameters.tenant_name}}
         description: "This PR updates the alertable_tenants.json file with a new tenant slug."
   output:
     links:
