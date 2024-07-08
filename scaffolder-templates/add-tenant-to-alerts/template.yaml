@@ -1,0 +1,84 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: add-tenant-to-alerts-list
+  title: Add tenant to PagerDuty List
+  description: Add a tenant from the list we monitor and alert against.
+
+spec:
+  owner: user:ianlink
+  type: service
+
+  parameters:
+    - title: Provide some simple information
+      required:
+        - tenant_name
+      properties:
+        tenant_name:
+          title: Name
+          type: string
+          description: Must be tenant slug
+          ui:autofocus: true
+            
+  steps:
+    - id: fetch-alerts-file
+      name: Fetch alerts file
+      action: fetch:plain
+      input:
+        url: "https://github.com/RoadieHQ/roadie-infrastructure/blob/main/terraform/account-resources-tf/deployments/prod/"
+        targetPath: 'fetch-folder'
+    - id: move-alerts-file-to-workbench
+      name: Move alerts file to a standalone location
+      action: fs:rename
+      input:
+        files:
+          - from: 'fetch-folder/alertable_tenants.json'
+            to: './alerts-folder/alertable_tenants.json'
+    - id: parse-alerts
+      name: Parse retrieved alerts file
+      action: roadiehq:utils:fs:parse
+      input:
+        path: './alerts-folder/alertable_tenants.json'
+    - id: log-result
+      name: "Parse Alerts Output"
+      action: debug:log
+      input:
+        message: 'Alerts content: ${{ steps["parse-alerts"].output.content }}'
+    - id: add-tenant-to-list
+      name: Add tenant
+      action: roadiehq:utils:jsonata:json:transform
+      input:
+        path: './alerts-folder/alertable_tenants.json'
+        loadAll: true
+        expression: '$.tenant_slugs ~> $append("badwolf") ~> $sort()' 
+    - id: write-alerts-to-file
+      name: Overwrite the existing alerts file with new contents
+      action: roadiehq:utils:fs:write
+      input:
+        path: './alerts-folder/alertable_tenants.json'
+        content: ${{ steps["add-tenant-to-list"].output.result }}
+    - id: parse-alerts
+      name: Parse modified Alerts file
+      action: roadiehq:utils:fs:parse
+      input:
+        path: './alerts-folder/alertable_tenants.json'
+    - id: log-result
+      name: Display modified alerts file
+      action: debug:log
+      input:
+        message: 'alertable_tenants.json content: ${{ steps["parse-alerts"].output.content }}'
+    - id: createPullRequest
+      name: Create a pull request
+      action: publish:github:pull-request
+      input:
+        sourcePath: ./alerts-folder/
+        targetPath: ./terraform/account-resources-tf/deployments/prod/
+        repoUrl: github.com?repo=roadie-infrastructure&owner=RoadieHQ
+        branchName: add-tenant-${{parameters.tenant_name}}-${{ '' | now }}
+        title: Update Alerts with tenant ${{parameters.tenant_name}}
+        description: "This PR updates the alertable_tenants.json file with a new tenant slug."
+  output:
+    links:
+      - title: View the pull request on GitHub
+        icon: github
+        url: ${{ steps['createPullRequest'].output.remoteUrl }}
