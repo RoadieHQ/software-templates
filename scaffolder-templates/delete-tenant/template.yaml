@@ -41,6 +41,12 @@ spec:
           ui:widget: radio
 
   steps:
+    - action: debug:log
+      id: write-debug-line
+      name: Write tenant details
+      input:
+        message: Triggering the deletion of the tenant ${{ parameters.tenant_name }} in ${{ parameters.tenant_environment }}
+
     - id: deleteDevTenant
       name: Delete development tenant
       if: ${{ parameters.tenant_environment === 'dev' and parameters.s3_emptied and parameters.alarm_removed }}
