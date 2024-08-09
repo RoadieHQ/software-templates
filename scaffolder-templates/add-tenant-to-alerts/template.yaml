@@ -1,9 +1,9 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: add-tenant-to-alerts-list
-  title: Add tenant to PagerDuty List
-  description: Add a tenant from the list we monitor and alert against.
+  name: finalize-new-customer
+  title: Finalize a new customer
+  description: Adds the new customer to the PagerDuty alerts and tags them in Intercome with "customer"
 
 spec:
   owner: user:ianlink
