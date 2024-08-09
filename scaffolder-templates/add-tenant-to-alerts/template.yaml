@@ -73,10 +73,15 @@ spec:
       input:
         method: POST
         path: /proxy/intercom/tags
-        body: 
-          name: customer
-          companies:
-            - company_id: ${{parameters.tenant_name}}
+        body: |
+          {
+            "name": "customer",
+            "companies": [
+                {
+                  "company_id": "${{parameters.tenant_name}}"
+                }
+              ]
+          }
     - id: log-result
       name: Display modified alerts file
       action: debug:log
