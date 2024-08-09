@@ -67,6 +67,21 @@ spec:
       action: debug:log
       input:
         message: 'alertable_tenants.json content: ${{ steps["parse-alerts"].output.content }}'
+    - id: add-customer-tag
+      name: Add Customer Tag
+      action: http:backstage:request
+      input:
+        method: POST
+        path: /proxy/intercom/tags
+        body: 
+          name: customer
+          companies:
+            - company_id: ${{parameters.tenant_name}}
+    - id: log-result
+      name: Display modified alerts file
+      action: debug:log
+      input:
+        message: '${{ steps["add-customer-tag"].output.content }}'
     - id: createPullRequest
       name: Create a pull request
       action: publish:github:pull-request
