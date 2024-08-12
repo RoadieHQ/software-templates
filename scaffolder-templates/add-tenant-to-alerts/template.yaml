@@ -75,7 +75,7 @@ spec:
         path: /proxy/intercom/tags
         body: |
           {
-            "name": "customer",
+            "name": "Customer",
             "companies": [
                 {
                   "company_id": "${{parameters.tenant_name}}"
