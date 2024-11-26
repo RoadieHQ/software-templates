@@ -16,6 +16,7 @@ spec:
         - tenant_environment
         - s3_emptied
         - alarm_removed
+        - skip_failures
       properties:
         tenant_name:
           title: Name
@@ -39,6 +40,10 @@ spec:
           title: Have you removed the pagerduty alert from roadie-infrastructure?
           type: boolean
           ui:widget: radio
+        skip_failures:
+          title: Skip failures
+          type: boolean
+          ui:widget: radio
 
   steps:
     - id: deleteDevTenant
@@ -53,7 +58,7 @@ spec:
                 "tenantName": "${{ parameters.tenant_name }}",
                 "tenantEmailDomain": "${{ parameters.tenant_email_domain }}",
                 "tenantEnvironment": "dev",
-                "skipFailures": false
+                "skipFailures": ${{ parameters.skip_failures }}
               }
 
     - id: deleteProdTenant
@@ -68,7 +73,7 @@ spec:
                 "tenantName": "${{ parameters.tenant_name }}",
                 "tenantEmailDomain": "${{ parameters.tenant_email_domain }}",
                 "tenantEnvironment": "prod",
-                "skipFailures": false
+                "skipFailures": ${{ parameters.skip_failures }}
               }
 
     - id: notify-tenant-deletion
