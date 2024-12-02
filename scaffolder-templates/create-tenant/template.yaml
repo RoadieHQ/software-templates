@@ -6,8 +6,8 @@ metadata:
   description: Send an API call to the tenant manager to create a tenant.
 
 spec:
-  owner: user:ianlink
-  type: none
+  owner: group:roadiehq/solutions
+  type: service
   parameters:
     - title: Provide some simple information
       required:
@@ -19,21 +19,36 @@ spec:
         tenant_name:
           title: Name
           type: string
-          description: No special chars, numbers as the first char, or dashes as the first or last char. 
+          description: The name of the tenant, used for the tenant slug.
           ui:autofocus: true
+          maxLength: 30
+          pattern: '^[a-z][a-z1-9-]*[a-z1-9]+$'
+          ui:help: Lowercase characters, dash (-), and underscore (_) only.
         tenant_email_domain:
           title: Email domain
           type: string
           description: The email domain of users who will be allowed to access the tenant.
+          pattern: '^[a-zA-Z0-9-]+.[a-zA-Z0-9-]+'
         admin_email:
           title: Admin email
           type: string
           description: The email of the person who will drive the evaluation.
+          pattern: '^[a-zA-Z0-9-_.]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-]+$'
         tenant_environment:
           title: Environment
           type: string
           default: dev
           enum: ['dev', 'prod']
+        createSlack:
+          title: Create Slack Channel?
+          type: boolean
+          default: false
+          ui:widget: radio
+        pov:
+          title: PoV Tenant?
+          type: boolean
+          default: true
+          ui:widget: radio
             
   steps:
     - id: createDevTenant
@@ -66,6 +81,27 @@ spec:
                 "adminEmail": "${{ parameters.admin_email }}",
                 "tenantEnvironment": "prod",
                 "skipFailures": false
+              }
+
+    - id: addPovTag
+      name: Is it a PoV Tenant?
+      if: ${{parameters.pov === true}}
+      action: http:backstage:request
+      input:
+        method: 'POST'
+        path: proxy/fragments
+        body: |
+              {
+                "decorator": {
+                  "entityRef": "resource:default/${{ parameters.tenant_name }}",
+                  "fragment": {
+                    "metadata": {
+                      "tags": [
+                        "pov"
+                      ]
+                    }
+                  }
+                }
               }
 
   output:
