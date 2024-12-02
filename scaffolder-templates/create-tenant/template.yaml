@@ -22,7 +22,7 @@ spec:
           description: The name of the tenant, used for the tenant slug.
           ui:autofocus: true
           maxLength: 30
-          pattern: '^([a-z][a-z-_]*)([a-z]+)$'
+          pattern: '^[a-z][a-z1-9-]*[a-z1-9]+$'
           ui:help: Lowercase characters, dash (-), and underscore (_) only.
         tenant_email_domain:
           title: Email domain
@@ -39,6 +39,16 @@ spec:
           type: string
           default: dev
           enum: ['dev', 'prod']
+        createSlack:
+          title: Create Slack Channel?
+          type: boolean
+          default: false
+          ui:widget: radio
+        pov:
+          title: PoV Tenant?
+          type: boolean
+          default: true
+          ui:widget: radio
             
   steps:
     - id: createDevTenant
@@ -71,6 +81,27 @@ spec:
                 "adminEmail": "${{ parameters.admin_email }}",
                 "tenantEnvironment": "prod",
                 "skipFailures": false
+              }
+
+    - id: addPovTag
+      name: Is it a PoV Tenant?
+      if: ${{parameters.pov === true}}
+      action: http:backstage:request
+      input:
+        method: 'POST'
+        path: proxy/fragments
+        body: |
+              {
+                "decorator": {
+                  "entityRef": "resource:default/${{ parameters.tenant_name }}",
+                  "fragment": {
+                    "metadata": {
+                      "tags": [
+                        "pov"
+                      ]
+                    }
+                  }
+                }
               }
 
   output:
