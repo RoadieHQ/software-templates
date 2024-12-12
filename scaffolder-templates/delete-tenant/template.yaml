@@ -4,6 +4,8 @@ metadata:
   name: delete-tenant
   title: Delete tenant
   description: Send an API call to the tenant manager to delete a tenant.
+  tags:
+    - Roadie
 
 spec:
   owner: user:ianlink
