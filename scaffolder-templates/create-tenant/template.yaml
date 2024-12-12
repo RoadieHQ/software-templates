@@ -9,7 +9,7 @@ metadata:
 
 spec:
   owner: group:roadiehq/solutions
-  type: service
+  type: Tenant
   parameters:
     - title: Provide some simple information
       required:
