@@ -4,6 +4,8 @@ metadata:
   name: create-tenant
   title: Create Tenant
   description: Send an API call to the tenant manager to create a tenant.
+  tags:
+    - Roadie
 
 spec:
   owner: group:roadiehq/solutions
