@@ -33,7 +33,7 @@ spec:
           title: Admin email
           type: string
           description: The email of the person who will drive the evaluation.
-          pattern: '^[a-zA-Z0-9-_.]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-]+$'
+          pattern: '^[a-zA-Z0-9-_.]+@[a-zA-Z0-9-.]+.[a-zA-Z0-9-]+$'
         tenant_environment:
           title: Environment
           type: string
