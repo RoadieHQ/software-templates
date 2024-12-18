@@ -1,0 +1,74 @@
+---
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: delete-entities
+  title: Delete Entities
+  description: Deletes all entities associated with a given YAML file from the catalog. Note - if autodiscovery is turned on these entities will re-appear if the source file is not deleted before.
+spec:
+  owner: roadie
+  type: template
+  parameters:
+    - title: Entities to delete
+      properties:
+        catalog-info-url:
+          title: Catalog info file url
+          type: string
+          description: The full SCM url to the YAML file you want to remove entities for from the catalog
+
+  steps:
+    - id: location
+      name: Get Root Location
+      action: http:backstage:request
+      input:
+        method: 'GET'
+        path: '/catalog/entities?filter=spec.target=${{ parameters["catalog-info-url"] | replace("/tree/", "/blob/") }}&filter=metadata.annotations.backstage.io/managed-by-location=url:${{ parameters["catalog-info-url"] | replace("/blob/", "/tree/") }}&fields=metadata.uid,metadata.name'
+    - id: parse
+      name: Parse entities response
+      if: ${{ steps.location.output.code === 200 }}
+      action: roadiehq:utils:jsonata
+      input:
+        data: ${{ steps.location.output.body }}
+        expression: '$.metadata.uid'
+    - id: parseNames
+      name: Parse entity names
+      if: ${{ steps.location.output.code === 200 }}
+      action: roadiehq:utils:jsonata
+      input:
+        data: ${{ steps.location.output.body }}
+        expression: '$.metadata.name'
+    - id: log-to-delete
+      action: debug:log
+      if: ${{ steps.location.output.code === 200 }}
+      input:
+        message: 'Deleting the following entities: ${{ steps.parseNames.output.result | string }}'
+    - id: delete-all
+      if: ${{ steps.parse.output.result is not string }}
+      name: Delete entities
+      each: ${{ steps.parse.output.result }}
+      action: http:backstage:request
+      input:
+        method: 'DELETE'
+        path: '/catalog/entities/by-uid/${{ each.value }}'
+    - id: delete-one
+      if: ${{ steps.parse.output.result is string }}
+      name: Delete entity
+      action: http:backstage:request
+      input:
+        method: 'DELETE'
+        path: '/catalog/entities/by-uid/${{ steps.parse.output.result }}'
+    - id: clean-catalog
+      name: Clean
+      action: http:backstage:request
+      input:
+        method: 'POST'
+        path: '/catalog-extensions/refresh-state/garbage-collection'
+        continueOnBadResponse: true
+    - id: log-result
+      action: debug:log
+      input:
+        message: 'Deleted the following entities for YAML file ${{ parameters["catalog-info-url"] }} with names: ${{ steps.parseNames.output.result | string }}'
+
+
+  output:
+    deletedEntityNames: ${{ steps.parseNames.output.result | string }}
