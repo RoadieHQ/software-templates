@@ -38,18 +38,26 @@ spec:
             allowedKinds: 
               - Group
     - title: Choose a location
+      description: |
+        This section will ask for details about the Owner and Repository name which will then be used 
+        to create a repository in that location using your GitHub credentials.
       required:
         - repoUrl
-      properties: 
+      properties:
         repoUrl:
-          title: Repository Location
+          title: Enter an Owner and Repository Name
+          description: |
+            The Owner should be your GitHub username. The Repository name should be a name that is not one that exists already in your GitHub account.
           type: string
           ui:field: RepoUrlPicker
           ui:options:
+            requestUserCredentials:
+              secretsKey: USER_OAUTH_TOKEN
+              additionalScopes:
+                github:
+                  - workflow
             allowedHosts:
               - github.com
-#            allowedOwners:
-#              - RoadieHQ
   steps:
     - id: template
       name: Fetch Skeleton + Template
