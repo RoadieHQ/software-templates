@@ -58,6 +58,7 @@ spec:
                   - workflow
             allowedHosts:
               - github.com
+              - bitbucket.org
   steps:
     - id: template
       name: Fetch Skeleton + Template
