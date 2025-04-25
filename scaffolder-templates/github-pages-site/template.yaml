@@ -23,13 +23,14 @@ spec:
         escalation_policy:
           title: PagerDuty escalation policy
           type: string
-          description: Choose a Pagerduty Escalation policy to notify when the page goes down
           ui:field: SelectFieldFromApi
           ui:options:
             path: "proxy/pagerduty/escalation_policies"
             arraySelector: 'escalation_policies'
             valueSelector: 'id'
             labelSelector: 'summary'
+            placeholder: 'Choose a Pagerduty Escalation policy' 
+            description: Choose a Pagerduty Escalation policy to notify when the page goes down
 
             
     - title: Choose a Source Control Management tool to store your new website in.
