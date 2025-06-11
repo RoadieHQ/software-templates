@@ -1,0 +1,101 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: getCustomValues
+  title: Get Custom Values
+  description: "Get Custom Values from Annotations in 2 ways."
+spec:
+  owner: group:roadie-demo/solutions
+  type: service
+
+  parameters:
+    - title: Components
+      properties:
+        compound:
+          type: string
+          ui:field: SelectFieldFromApi
+          ui:options:
+            path: "catalog/entities"
+            params:
+              filter: 'kind=component,spec.type=service'
+            valueSelector: 'metadata.name'
+            labelSelector: 
+              - spec.owner
+              - metadata.name
+        components:
+          type: string
+          ui:field: SelectFieldFromApi
+          ui:options:
+            path: "catalog/entities"
+            params:
+              filter: 'kind=component,spec.type=service'
+            valueSelector: 'metadata.name'
+            labelTemplate: '{{metadata.namespace}}:{{metadata.name}}'
+
+        ownedEntities:
+          type: string
+          ui:field: OwnedEntityPicker
+          ui:options:
+            catalogFilter:
+              kind: "component"
+              spec.type: "service"
+
+    - title: Domains
+      properties:
+        domain:
+          type: object
+          ui:field: SelectFieldFromApi
+          ui:options:
+            path: "catalog/entities/by-query"
+            params:
+              filter: 'kind=domain'
+            arraySelector: 'items'
+            valueSelector: 'metadata'
+            labelSelector: 'metadata.name'
+
+    - title: Owned Entity Picker 
+      properties:
+        ownedEntities:
+          type: string
+          ui:field: OwnedEntityPicker
+          ui:options:
+            catalogFilter:
+              kind: "component"
+
+    - title: SelectFieldFromApi Filtered 
+      properties:
+        selectValueFromEntity:
+          type: string
+          ui:field: SelectFieldFromApi
+          ui:options:
+            path: "catalog/entities"
+            params:
+              filter: "kind=system,metadata.annotations.badwolf.so/custom-value"
+            valueSelector: "metadata.annotations['badwolf.so/custom-value']"
+            labelSelector: "metadata.name"
+
+  steps:
+    - id: log-domain-selection
+      action: debug:log
+      name: Log Domain Selection
+      input:
+        message: "Selected value: ${{ parameters.domain | dump }}"
+
+    - id: log-owned-entity-selection
+      action: debug:log
+      name: Log Owned Entity Selection
+      input:
+        message: "Selected value: ${{ parameters.ownedEntities }}"
+
+    - id: log-selectFieldFromApi-filtered-selection
+      action: debug:log
+      name: Log SelectFieldFromApi Filtered selection 
+      input:
+        message: "Selected value: ${{ parameters.selectValueFromEntity }}"
+
+    - id: retrieve-owned-entity
+      name: Retrieve Owned Entity
+      action: http:backstage:request
+      input:
+        method: 'GET'
+        path: "/catalog/entities/by-name/${{ parameters.ownedEntities | replace(':', '/') }}"
