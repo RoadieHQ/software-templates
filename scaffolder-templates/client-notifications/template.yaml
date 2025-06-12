@@ -36,7 +36,18 @@ spec:
           content-type: 'application/json; charset=utf-8'
         body:
           channel: C06ER73D0DP
-          text: ${{ parameters.message }}
+          body: |
+              {
+                'blocks': [
+                  {
+                    'type': 'section',
+                    'text': {
+                      'type': 'mrkdwn',
+                      'text': '${{ parameters.message }}'
+                    }
+                  }
+                ]
+              }
 
     - id: log-response
       name: Log Response
