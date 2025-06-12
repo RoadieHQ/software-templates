@@ -1,0 +1,38 @@
+kind: Template
+metadata:
+  name: client-notifications
+  title: Send Client Notifications
+  description: Send a notification to all client external slack channels
+
+spec:
+  owner: user:ian.link
+  type: none
+  parameters:
+    - title: Message
+      required:
+        - message
+      properties:
+        message:
+          title: Message
+          description: I support markdown!
+          type: string
+          ui:widget: textarea
+          ui:options:
+            rows: 30
+        sendToClients:
+          title: Send to Clients
+          description: Send this message to the all Client channels.
+          type: boolean
+
+  steps:
+    - id: 'send-notification'
+      name: 'Send Notification'
+      action: 'http:backstage:request'
+      input:
+        method: 'POST'
+        path: 'proxy/slack/chat.postMessage'
+        headers:
+          content-type: 'application/json; charset=utf-8'
+        body:
+          channel: C06ER73D0DP
+          text: ${{ parameters.message }}
