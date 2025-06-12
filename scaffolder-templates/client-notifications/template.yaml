@@ -31,7 +31,7 @@ spec:
       action: 'http:backstage:request'
       input:
         method: 'POST'
-        path: 'proxy/slack/chat.postMessage'
+        path: 'proxy/slack-roadie-announcements/chat.postMessage'
         headers:
           content-type: 'application/json; charset=utf-8'
         body:
