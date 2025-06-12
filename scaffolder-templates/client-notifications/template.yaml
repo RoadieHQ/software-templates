@@ -37,3 +37,9 @@ spec:
         body:
           channel: C06ER73D0DP
           text: ${{ parameters.message }}
+
+    - id: log-response
+      name: Log Response
+      action: debug:log
+      input:
+        message: ${{ steps.send-notification.output.response }}
