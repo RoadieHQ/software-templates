@@ -42,4 +42,4 @@ spec:
       name: Log Response
       action: debug:log
       input:
-        message: ${{ steps.send-notification.output | dump }}
+        message: ${{ steps.send-notification.output.result | dump }}
