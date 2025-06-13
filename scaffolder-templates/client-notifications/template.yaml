@@ -35,19 +35,12 @@ spec:
         headers:
           content-type: 'application/json'
         body:
-          channel: C06ER73D0DP
-          body: |
-              {
-                'blocks': [
-                  {
-                    'type': 'section',
-                    'text': {
-                      'type': 'mrkdwn',
-                      'text': '${{ parameters.message }}'
-                    }
-                  }
-                ]
-              }
+        channel: C06ER73D0DP
+        blocks:
+          - type: section
+            text:
+              type: mrkdwn
+              text: ${{ parameters.message }}
 
     - id: log-response
       name: Log Response
