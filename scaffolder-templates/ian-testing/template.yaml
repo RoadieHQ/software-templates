@@ -19,9 +19,7 @@ spec:
             params:
               filter: 'kind=component,spec.type=service'
             valueSelector: 'metadata.name'
-            labelSelector: 
-              - spec.owner
-              - metadata.name
+            labelSelector: 'metadata.name'
         components:
           type: string
           ui:field: SelectFieldFromApi

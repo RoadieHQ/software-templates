@@ -33,7 +33,7 @@ spec:
         method: 'POST'
         path: 'proxy/slack-roadie-announcements/chat.postMessage'
         headers:
-          content-type: 'application/json; charset=utf-8'
+          content-type: 'application/json'
         body:
           channel: C06ER73D0DP
           body: |
@@ -53,4 +53,4 @@ spec:
       name: Log Response
       action: debug:log
       input:
-        message: ${{ steps["send-notification"].output.result | dump }}
+        message: ${{ steps["send-notification"].output.response | dump }}
