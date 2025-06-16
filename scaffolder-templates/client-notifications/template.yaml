@@ -9,6 +9,30 @@ spec:
   owner: user:ian.link
   type: none
   parameters:
+    - title: Channel
+      properties:
+        sendToAllClients:
+          title: Send to All Clients
+          description: Send this message to the all Client channels.
+          type: boolean
+          default: false
+
+      if:
+        properties:
+          sendToAllClients:
+            const: false
+      then:
+        properties:
+          channel:
+            type: string
+            ui:field: SelectFieldFromApi
+            ui:options:
+              path: "catalog/entities"
+              params:
+                filter: 'kind=resource,spec.type=tenant,metadata.labels.slack-channel-id'
+              labelSelector: 'metadata.name'
+              valueSelector: 'metadata.labels["slack-channel-id"]'
+
     - title: Message
       required:
         - message
@@ -20,14 +44,22 @@ spec:
           ui:widget: textarea
           ui:options:
             rows: 30
-        sendToClients:
-          title: Send to Clients
-          description: Send this message to the all Client channels.
-          type: boolean
 
   steps:
-    - id: 'send-notification'
-      name: 'Send Notification'
+    - id: 'get-channel-ids'
+      name: 'Get Channel IDs'
+      action: 'http:backstage:request'
+      input:
+        method: 'GET'
+        path: 'catalog/entities'
+        params:
+          filter: 'kind=resource,spec.type=tenant,metadata.labels.slack-channel-id'
+          fields: 'metadata.name,metadata.labels.slack-channel-id'
+
+    - id: 'send-notification-all-clients'
+      name: 'Send Notification to All Clients'
+      if: ${{ parameters.sendToAllClients }}
+      each: "${{ steps['get-channel-ids'].output.body }}"
       action: 'http:backstage:request'
       input:
         method: 'POST'
@@ -35,15 +67,26 @@ spec:
         headers:
           content-type: 'application/json'
         body:
-          channel: C06ER73D0DP
+          channel: ${{ each.value.metadata.labels["slack-channel-id"] }}
           blocks:
             - type: section
               text:
                 type: mrkdwn
                 text: ${{ parameters.message }}
 
-    - id: log-response
-      name: Log Response
-      action: debug:log
+    - id: 'send-notification-single-client'
+      name: 'Send Notification to Single Client'
+      if: ${{ parameters.sendToAllClients == false }}
+      action: 'http:backstage:request'
       input:
-        message: ${{ steps["send-notification"].output | dump }}
+        method: 'POST'
+        path: 'proxy/slack-roadie-announcements/chat.postMessage'
+        headers:
+          content-type: 'application/json'
+        body:
+          channel: ${{ parameters.channel }}
+          blocks:
+            - type: section
+              text:
+                type: mrkdwn
+                text: ${{ parameters.message }}
