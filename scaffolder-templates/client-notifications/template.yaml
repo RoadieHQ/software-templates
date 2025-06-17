@@ -1,7 +1,7 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: client-notifications
+  name: client-notifications-preview
   title: Send Client Notifications
   description: Send a notification to all client external slack channels
 
@@ -9,29 +9,80 @@ spec:
   owner: user:ian.link
   type: none
   parameters:
-    - title: Channel
+    - title: Slack
       properties:
-        sendToAllClients:
-          title: Send to All Clients
-          description: Send this message to the all Client channels.
+        sendToSlackClients:
+          title: Send to Slack Clients
+          description: Send this message to Slack Client.
           type: boolean
           default: false
 
       if:
         properties:
-          sendToAllClients:
-            const: false
+          sendToSlackClients:
+            const: true
+
       then:
         properties:
-          channel:
-            type: string
-            ui:field: SelectFieldFromApi
-            ui:options:
-              path: "catalog/entities"
-              params:
-                filter: 'kind=resource,spec.type=tenant,metadata.labels.slack-channel-id'
-              labelSelector: 'metadata.name'
-              valueSelector: 'metadata.labels["slack-channel-id"]'
+          sendToAllSlackClients:
+            title: Send to All Slack Clients
+            description: Send this message to the all Slack Client channels.
+            type: boolean
+            default: false
+
+        if:
+          properties:
+            sendToAllSlackClients:
+              const: false
+
+        then:
+          properties:
+            slackChannel:
+              type: string
+              ui:field: SelectFieldFromApi
+              ui:options:
+                path: "catalog/entities"
+                params:
+                  filter: 'kind=resource,spec.type=tenant,metadata.labels.slack-channel-id'
+                labelSelector: 'metadata.name'
+                valueSelector: 'metadata.labels["slack-channel-id"]'
+
+    - title: Teams
+      properties:
+        sendToTeamsClients:
+          title: Send to Teams Clients
+          description: Send this message to Teams Client.
+          type: boolean
+          default: false
+
+      if:
+        properties:
+          sendToTeamsClients:
+            const: true
+
+      then:
+        properties:
+          sendToAllTeamsClients:
+            title: Send to All Teams Clients
+            description: Send this message to the all Teams Client channels.
+            type: boolean
+            default: false
+
+        if:
+          properties:
+            sendToAllTeamsClients:
+              const: false
+        then:
+          properties:
+            teamsChannel:
+              type: string
+              ui:field: SelectFieldFromApi
+              ui:options:
+                path: "catalog/entities"
+                params:
+                  filter: 'kind=resource,spec.type=tenant,metadata.annotations.roadie.io/ms-teams-id'
+                labelSelector: 'metadata.name'
+                valueSelector: 'metadata.labels["ms-teams-channel-id"]'
 
     - title: Message
       required:
@@ -46,8 +97,9 @@ spec:
             rows: 30
 
   steps:
-    - id: 'get-channel-ids'
-      name: 'Get Channel IDs'
+    - id: 'get-slack-channel-ids'
+      name: "Get Slack Channel Id's"
+      if: ${{ parameters.sendToSlackClients }}
       action: 'http:backstage:request'
       input:
         method: 'GET'
@@ -56,10 +108,10 @@ spec:
           filter: 'kind=resource,spec.type=tenant,metadata.labels.slack-channel-id'
           fields: 'metadata.name,metadata.labels.slack-channel-id'
 
-    - id: 'send-notification-all-clients'
-      name: 'Send Notification to All Clients'
-      if: ${{ parameters.sendToAllClients }}
-      each: "${{ steps['get-channel-ids'].output.body }}"
+    - id: 'send-notification-all-slack-clients'
+      name: 'Send Notification to All Slack Clients'
+      if: ${{ parameters.sendToSlackClients and parameters.sendToAllSlackClients }}
+      each: "${{ steps['get-slack-channel-ids'].output.body }}"
       action: 'http:backstage:request'
       input:
         method: 'POST'
@@ -74,9 +126,9 @@ spec:
                 type: mrkdwn
                 text: ${{ parameters.message }}
 
-    - id: 'send-notification-single-client'
-      name: 'Send Notification to Single Client'
-      if: ${{ parameters.sendToAllClients == false }}
+    - id: 'send-notification-single-slack-client'
+      name: 'Send Notification to Single Slack Client'
+      if: ${{ parameters.sendToSlackClients and parameters.sendToAllSlackClients == false }}
       action: 'http:backstage:request'
       input:
         method: 'POST'
@@ -84,9 +136,45 @@ spec:
         headers:
           content-type: 'application/json'
         body:
-          channel: ${{ parameters.channel }}
+          channel: ${{ parameters.sleckChannel }}
           blocks:
             - type: section
               text:
                 type: mrkdwn
                 text: ${{ parameters.message }}
+
+    - id: 'get-ms-teams-channel-ids'
+      name: "Get MS Team Id's"
+      if: ${{ parameters.sendToTeamsClients }}
+      action: 'http:backstage:request'
+      input:
+        method: 'GET'
+        path: 'catalog/entities'
+        params:
+          filter: 'kind=resource,spec.type=tenant,metadata.labels.ms-teams-channel-id'
+          fields: 'metadata.name,metadata.labels.ms-teams-channel-id'
+
+    - id: 'send-notification-all-ms-teams-clients'
+      name: 'Send Notification to All MS Teams Clients'
+      if: ${{ parameters.sendToTeamsClients and parameters.sendToAllTeamsClients }}
+      each: "${{ steps['get-ms-teams-channel-ids'].output.body }}"
+      action: 'http:backstage:request'
+      input:
+        method: 'POST'
+        path: 'proxy/ms-teams/teams/${{ each.value.metadata.labels["ms-teams-channel-id"] }}'
+        headers:
+          content-type: 'application/json'
+        body:
+          content: ${{ parameters.message }}
+
+    - id: 'send-notification-single-ms-teams-client'
+      name: 'Send Notification to Single MS Teams Client'
+      if: ${{ parameters.sendToTeamsClients and parameters.sendToAllTeamsClients == false }}
+      action: 'http:backstage:request'
+      input:
+        method: 'POST'
+        path: 'proxy/ms-teams/teams/${{ parameter.teamsChannel }}'
+        headers:
+          content-type: 'application/json'
+        body:
+          content: ${{ parameters.message }}
