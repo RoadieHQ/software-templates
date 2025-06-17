@@ -6,8 +6,8 @@ metadata:
   description: Send a notification to all client external slack channels
 
 spec:
-  owner: user:ian.link
-  type: none
+  owner: group:roadiehq/solutions
+  type: Notification
   parameters:
     - title: Slack
       properties:
