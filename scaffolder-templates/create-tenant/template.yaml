@@ -49,6 +49,7 @@ spec:
         tenant_type:
           title: Tenant Type
           type: string
+          description: The type will be used to tag the tenant in the catalog (Other is not tagged).
           default: pov
           enum: ['internal', 'pov', 'vendor', 'other']
             
