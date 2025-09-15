@@ -100,7 +100,7 @@ spec:
                   "fragment": {
                     "metadata": {
                       "tags": [
-                        ${{ parameters.tenant_type }}
+                        "${{ parameters.tenant_type }}"
                       ]
                     }
                   }
