@@ -8,7 +8,7 @@ metadata:
     - Roadie
 
 spec:
-  owner: user:ianlink
+  owner: group:roadiehq/solutions
   type: Tenant
   parameters:
     - title: Provide some simple information
@@ -79,7 +79,7 @@ spec:
       action: 'http:backstage:request'
       input: 
         method: 'POST'
-        header: 
+        headers: 
           - Content-type: application/json
         path: /proxy/tenant-deletion-notification
         body: |
