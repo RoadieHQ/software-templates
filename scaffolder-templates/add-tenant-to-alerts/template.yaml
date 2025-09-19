@@ -49,7 +49,6 @@ spec:
       action: roadiehq:utils:jsonata:json:transform
       input:
         path: './alerts-folder/alertable_tenants.json'
-        loadAll: true
         expression: '$.tenant_slugs ~> $append("${{parameters.tenant_name}}") ~> $sort()' 
     - id: write-alerts-to-file
       name: Overwrite the existing alerts file with new contents
