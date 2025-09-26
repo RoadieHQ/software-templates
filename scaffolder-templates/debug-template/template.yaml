@@ -39,8 +39,20 @@ spec:
       input:
         path: ./template.md
 
+    - id: read-directory
+      name: Read Directory
+      action: fs:readdir
+      input:
+        path: .
+
     - id: log-message
       name: Log Message
       action: debug:log
       input:
         message: ${{ steps['read-file'].output.content }}
+
+    - id: log-directory-message
+      name: Log Directory Message
+      action: debug:log
+      input:
+        message: ${{ steps['read-directory'].output.files }}
