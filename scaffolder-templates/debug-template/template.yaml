@@ -43,7 +43,8 @@ spec:
       name: Read Directory
       action: fs:readdir
       input:
-        path: .
+        paths: 
+          - .
 
     - id: log-message
       name: Log Message
