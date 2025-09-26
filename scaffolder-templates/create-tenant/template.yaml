@@ -46,11 +46,12 @@ spec:
           type: boolean
           default: false
           ui:widget: radio
-        pov:
-          title: PoV Tenant?
-          type: boolean
-          default: true
-          ui:widget: radio
+        tenant_type:
+          title: Tenant Type
+          type: string
+          description: The type will be used to tag the tenant in the catalog (Other is not tagged).
+          default: pov
+          enum: ['internal', 'pov', 'vendor', 'other']
             
   steps:
     - id: createDevTenant
@@ -85,9 +86,9 @@ spec:
                 "skipFailures": false
               }
 
-    - id: addPovTag
-      name: Is it a PoV Tenant?
-      if: ${{parameters.pov === true}}
+    - id: addTags
+      name: Tag with Tenant Type?
+      if: ${{parameters.tenant_type !== 'other'}}
       action: http:backstage:request
       input:
         method: 'POST'
@@ -99,12 +100,17 @@ spec:
                   "fragment": {
                     "metadata": {
                       "tags": [
-                        "pov"
+                        "${{ parameters.tenant_type }}"
                       ]
                     }
                   }
                 }
-              }
+              }         
+    - id: log-result
+      action: debug:log
+      name: Log Entity chosen
+      input:
+        message: ${{ parameters.tenant_name }} created by ${{ user.ref }}
 
   output:
-    resp: ${{ steps.createDevTenant.output.body }} ${{ steps.createProdTenant.output.body }}
+    resp: ${{ parameters.tenant_name }} created by ${{ user.ref }}

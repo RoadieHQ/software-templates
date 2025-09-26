@@ -2,7 +2,7 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: client-notifications
-  title: Send Client Notifications
+  title: Send Client Slack Notifications
   description: Send a notification to all client external slack channels
 
 spec:
