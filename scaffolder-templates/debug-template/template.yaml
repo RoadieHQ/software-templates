@@ -51,6 +51,11 @@ spec:
       action: debug:log
       input:
         message: ${{ steps['read-file'].output.content }}
+  
+    - id: wait-for-github
+      action: debug:wait
+      input:
+        seconds: 4        
 
     - id: log-directory-message
       name: Log Directory Message
