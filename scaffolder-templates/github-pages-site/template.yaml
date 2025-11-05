@@ -60,7 +60,6 @@ spec:
       name: Publish to GitHub
       action: publish:github
       input:
-        allowedHosts: ['github.com']
         description: 'A static HTML website. Just like the good old days.'
         repoUrl: ${{ parameters.repoUrl }}
         defaultBranch: main
