@@ -24,7 +24,7 @@ spec:
 
   steps:
     - id: fetch-template
-      action: fetch:template
+      action: fetch:template:debug
       input:
         url: https://github.com/RoadieHQ/software-templates/tree/main/scaffolder-templates/debug-template/skeleton
         templateFileExtension: true
