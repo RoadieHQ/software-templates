@@ -1,0 +1,14 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: upgrade-1511
+  title: upgrade-1511
+  description: upgrade-1511
+  annotations:
+    github.com/project-slug: roadiehq/software-templates
+    
+    
+spec:
+  type: service
+  owner: group:roadiehq/engineering
+  lifecycle: production
