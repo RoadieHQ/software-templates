@@ -1,0 +1,108 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: gitlab-signed-commit
+  title: GitLab repo with a PGP signed commit
+  description:
+    Publishes a small repo to GitLab and signs the initial commit with the
+    tenant's GITLAB_COMMIT_SIGNING_KEY. Use it to check that commit signing is
+    wired up end to end.
+
+spec:
+  owner: group:roadiehq/engineering
+  type: service
+
+  parameters:
+    - title: Where to publish
+      required:
+        - repoUrl
+      properties:
+        repoUrl:
+          title: Repository location
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - gitlab.com
+
+    - title: Commit identity
+      required:
+        - gitAuthorName
+        - gitAuthorEmail
+      description:
+        The email must match a user ID on the uploaded PGP key, otherwise GitLab
+        shows the commit as Unverified even though the signature itself is good.
+      properties:
+        gitAuthorName:
+          title: Commit author name
+          type: string
+          default: Roadie Scaffolder
+        gitAuthorEmail:
+          title: Commit author email
+          type: string
+          description: Must match a user ID on the signing key
+        signCommit:
+          title: Sign the commit
+          type: boolean
+          default: true
+          description:
+            Turn this off to publish an unsigned commit, as a control to compare
+            against
+
+  steps:
+    - id: fetch-skeleton
+      name: Fetch skeleton
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          gitAuthorName: ${{ parameters.gitAuthorName }}
+          gitAuthorEmail: ${{ parameters.gitAuthorEmail }}
+          signCommit: ${{ parameters.signCommit }}
+
+    - id: publish
+      name: Publish to GitLab
+      action: publish:gitlab
+      input:
+        repoUrl: ${{ parameters.repoUrl }}
+        repoVisibility: private
+        defaultBranch: main
+        gitCommitMessage: Initial commit from the Roadie scaffolder
+        gitAuthorName: ${{ parameters.gitAuthorName }}
+        gitAuthorEmail: ${{ parameters.gitAuthorEmail }}
+        signCommit: ${{ parameters.signCommit }}
+
+    - id: report
+      name: Report what to check
+      action: debug:log
+      input:
+        message: |
+          Published ${{ steps['publish'].output.remoteUrl }}
+          Commit ${{ steps['publish'].output.commitHash }}
+
+          Signing requested: ${{ parameters.signCommit }}
+
+          Open the commit and look for the Verified badge:
+          ${{ steps['publish'].output.remoteUrl }}/-/commit/${{ steps['publish'].output.commitHash }}
+
+          If the badge is missing, check in this order:
+            1. GITLAB_COMMIT_SIGNING_KEY is set in Settings -> Secrets, and the
+               backend has restarted since it was saved
+            2. The key is RSA and has no passphrase. An ed25519 key, which is what
+               gpg 2.4 generates by default, will not work
+            3. The public half of the key is uploaded to the GitLab profile of the
+               user whose email is ${{ parameters.gitAuthorEmail }}
+            4. That same email is a user ID on the key
+
+          A signature that verifies locally but shows Unverified in GitLab almost
+          always means 3 or 4.
+
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps['publish'].output.remoteUrl }}
+      - title: Signed commit
+        url: ${{ steps['publish'].output.remoteUrl }}/-/commit/${{ steps['publish'].output.commitHash }}
+    text:
+      - title: Commit hash
+        content: ${{ steps['publish'].output.commitHash }}

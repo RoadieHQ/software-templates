@@ -1,0 +1,9 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: gitlab-signed-commit-test
+  description: Repo created to test PGP commit signing in publish:gitlab
+spec:
+  type: service
+  lifecycle: experimental
+  owner: group:roadiehq/engineering
